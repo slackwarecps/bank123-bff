@@ -15,6 +15,87 @@ Este projeto é feito em **Java 17** com o **Spring Boot**, que é tipo a chutei
 -   **Firebase Auth**: O segurança da balada. Só entra quem tiver o nome na lista (token JWT válido).
 -   **OpenAPI 3.0**: O nosso manual de táticas, com a documentação da API gerada automaticamente.
 
+## 🏗️ Arquitetura e Infraestrutura
+
+Este serviço opera no padrão **BFF (Backend for Frontend)**, servindo como a camada de lógica de negócios e orquestração de dados para a aplicação móvel. Ele foi desenhado para ser **Stateless** e **Containerizado**.
+
+### Visão Geral da Infraestrutura
+
+```mermaid
+graph LR
+    subgraph Client_Side [📱 Client Side]
+        FlutterApp[("Flutter App")]
+    end
+
+    subgraph External_Services [☁️ Serviços Externos]
+        FirebaseAuth[("🔥 Firebase Auth<br/>(IdP & JWKS)")]
+        DockerHub[("🐳 Docker Hub<br/>(Registry)")]
+    end
+
+    subgraph Cloud_Backend [☁️ Infraestrutura Backend]
+        style Cloud_Backend fill:#f9f9f9,stroke:#333,stroke-width:2px
+        
+        Gateway[("🛡️ API Gateway<br/>(Zuplo)")]
+        
+        subgraph PaaS_Render [Render.com]
+            SpringBoot[("☕ Spring Boot BFF<br/>(API Java)")]
+        end
+    end
+
+    subgraph BaaS_Supabase [⚡ Supabase]
+        style BaaS_Supabase fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#fff
+        Postgres[("🐘 PostgreSQL<br/>(Database)")]
+    end
+
+    %% Fluxo de Autenticação Inicial
+    FlutterApp -- "1. Login" --> FirebaseAuth
+    FirebaseAuth -- "2. Retorna JWT" --> FlutterApp
+
+    %% Fluxo da Requisição
+    FlutterApp -- "3. Request + Token" --> Gateway
+    Gateway -- "4. Proxy / Roteamento" --> SpringBoot
+
+    %% Validação do Token (A mudança solicitada)
+    SpringBoot -- "5. Valida Assinatura/Token" --> FirebaseAuth
+    
+    %% Persistência
+    SpringBoot -- "6. Leitura/Escrita" --> Postgres
+
+    %% Deploy
+    DockerHub -. "7. Pull Image" .-> SpringBoot
+
+    %% Estilização
+    style FlutterApp fill:#02569B,color:#fff
+    style FirebaseAuth fill:#FFCA28,color:#333
+    style DockerHub fill:#0db7ed,color:#fff
+    style Gateway fill:#E34F26,color:#fff
+    style SpringBoot fill:#6DB33F,color:#fff
+    style Postgres fill:#336791,color:#fff
+    style BaaS_Supabase color:#333
+```
+
+
+### 🔒 Segurança e Fluxo de Validação
+O backend adota uma postura **Zero Trust**:
+
+1.  **Roteamento:** O serviço não é exposto diretamente à internet pública. Ele recebe tráfego roteado e higienizado pelo **API Gateway (Zuplo)**.
+2.  **Validação de Identidade:**
+    * Ao receber uma requisição, o Spring Boot intercepta o header `Authorization`.
+    * Ele consulta as chaves públicas (JWKS) do **Firebase Auth** para validar a assinatura digital e a validade do Token JWT.
+    * Requisições sem token ou com token inválido são rejeitadas com `401 Unauthorized` antes de processar qualquer regra de negócio.
+
+### 🚀 Pipeline de CI/CD e Deploy
+A aplicação segue os princípios do **The Twelve-Factor App**:
+
+* **Build:** O código é empacotado via Docker e a imagem é enviada para o **Docker Hub**.
+* **Deploy:** O **Render.com** detecta a atualização da imagem e realiza o deploy automático (Zero-downtime deployment).
+* **Configuração:** Credenciais de banco e chaves de API são injetadas via Variáveis de Ambiente no container.
+
+### 💾 Persistência de Dados
+* **Banco de Dados:** PostgreSQL (Hospedado na **Supabase**).
+* **Conexão:** Via JDBC/HikariCP pool.
+
+
 ## 📋 Pré-requisitos
 
 Antes de botar pra rodar, garante que você tem o material de jogo:
