@@ -20,6 +20,9 @@ target/
 # BlueJ files
 *.ctxt
 
+# Local properties files
+application-local.properties
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
