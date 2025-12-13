@@ -1,0 +1,8 @@
+description = "Gera backup do banco de dados e atualiza o arquivo de dump"
+prompt = """
+Execute o comando abaixo para gerar o backup do banco de dados e atualizar o arquivo de dump na pasta banco-postgres:
+
+docker exec -t bank123-postgres pg_dump -U bank123 bank123_db > banco-postgres/dump-bank123-v15.sql
+
+Após a execução, confirme se o arquivo foi atualizado com sucesso verificando o tamanho ou a data de modificação.
+"""

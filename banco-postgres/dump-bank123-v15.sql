@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict itIZfrTgJZGTYr1WcgQSz3FM7qJ7qVa4G30FBJO71mIrTdRIF5wyebURZCTZ8Za
+\restrict xJCztofcjfH55dCGjhfy3AvrmG92etQWstUehLtobvVo5BM5es3gWHNENagy5iB
 
 -- Dumped from database version 15.15
 -- Dumped by pg_dump version 15.15
@@ -31,14 +31,13 @@ CREATE TABLE public.clientes (
     nome_completo character varying(100) NOT NULL,
     cpf character varying(14) NOT NULL,
     email character varying(150),
-    user_uid character varying(150),
     data_nascimento date,
     endereco_logradouro character varying(150),
     endereco_numero character varying(20),
     endereco_complemento character varying(50),
     endereco_bairro character varying(50),
     endereco_cidade character varying(100),
-    endereco_estado character(2),
+    endereco_estado character varying(255),
     endereco_cep character varying(9),
     data_atualizacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     numeroconta integer NOT NULL
@@ -140,8 +139,8 @@ ALTER TABLE ONLY public.livrocaixa ALTER COLUMN idtransacao SET DEFAULT nextval(
 -- Data for Name: clientes; Type: TABLE DATA; Schema: public; Owner: bank123
 --
 
-COPY public.clientes (id_cliente, nome_completo, cpf, email, data_nascimento, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, data_atualizacao, numeroconta, user_uid) FROM stdin;
-1	Fabio Pereira	123.456.789-00	fabio.pereira@bank123.com	1979-04-20	Av. Paulista	1000	\N	Bela Vista	São Paulo	SP	01310-100	2025-12-13 10:04:07.784694	123456	a1b2c3d4-e5f6-7890-1234-567890abcdef
+COPY public.clientes (id_cliente, nome_completo, cpf, email, data_nascimento, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, data_atualizacao, numeroconta) FROM stdin;
+1	Fabio Pereira	123.456.789-00	fabio.pereira@bank123.com	1979-04-20	Av. Paulista	1000	\N	Bela Vista	São Paulo	SP	01310-100	2025-12-13 10:04:07.784694	123456
 \.
 
 
@@ -236,5 +235,5 @@ ALTER TABLE ONLY public.clientes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict itIZfrTgJZGTYr1WcgQSz3FM7qJ7qVa4G30FBJO71mIrTdRIF5wyebURZCTZ8Za
+\unrestrict xJCztofcjfH55dCGjhfy3AvrmG92etQWstUehLtobvVo5BM5es3gWHNENagy5iB
 

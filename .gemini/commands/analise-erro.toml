@@ -1,0 +1,7 @@
+description = "Analise o Erro e de a causa raiz "
+prompt = """
+Rode o projeto.
+Analise o log de Erros
+identifique a causa raiz.
+DE possiveis solucoes a causa raiz.
+"""

@@ -57,7 +57,7 @@ O projeto é um **BFF (Backend for Frontend)** para uma aplicação bancária, d
 - Sempre me chame de Fabão.
 - Uso macbook para codificar e uso o vscode como IDE.
 
-A fonte verdade do banco esta em: banco-postgres/dump-bank123-v15.sql
+A fonte verdade do banco esta em: banco-postgres/dump-bank123-v15.sql (atualizado em sábado, 13 de dezembro de 2025)
 
 ## Gemini Added Memories
 - o arquivo @bff-bank123-openapi.json deve ser atualizado toda a vez que a API rest for modificada.
