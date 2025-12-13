@@ -156,4 +156,7 @@ Pra ver se a zaga tá firme e o ataque tá afiado, rode nossa bateria de testes:
 A documentação oficial do BFF, no padrão OpenAPI 3.0, pode ser acessada em tempo real no endereço:
 **`http://localhost:8080/v3/api-docs`**
 
+Você pode visualizar e testar os endpoints através da interface amigável do Swagger UI:
+**`http://localhost:8080/swagger-ui/index.html`**
+
 Você também pode obter a definição completa da API no formato JSON através do arquivo `bff-bank123-openapi.json`, que é gerado quando a aplicação está rodando.

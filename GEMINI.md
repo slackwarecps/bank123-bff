@@ -63,3 +63,7 @@ A fonte verdade do banco esta em: banco-postgres/dump-bank123-v15.sql (atualizad
 
 ## Gemini Added Memories
 - o arquivo @bff-bank123-openapi.json deve ser atualizado toda a vez que a API rest for modificada.
+- Todos os enpoints devem ser protegidos com o token do firebase e o padrao para as consultas devem ser pelo numero da conta. Exceto os endpoints do swagger e healthcheck. 
+x-account-id
+x-correlationId
+Authorization
