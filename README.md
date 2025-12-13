@@ -13,7 +13,7 @@ Este projeto é feito em **Java 17** com o **Spring Boot**, que é tipo a chutei
 -   **Maven**: O roupeiro, que cuida de todas as dependências e garante que ninguém entre em campo com o meião trocado.
 -   **PostgreSQL**: O nosso cofre, onde a gente guarda o suado dinheirinho dos nossos clientes.
 -   **Firebase Auth**: O segurança da balada. Só entra quem tiver o nome na lista (token JWT válido).
--   **OpenAPI 3.0**: O nosso manual de táticas, documentando todas as jogadas (endpoints).
+-   **OpenAPI 3.0**: O nosso manual de táticas, com a documentação da API gerada automaticamente.
 
 ## 📋 Pré-requisitos
 
@@ -98,8 +98,47 @@ export DB_PASSWORD=senhabank123
 
 ### Via VS Code (Debug):
 
+Para depurar a aplicação diretamente no VS Code, você precisará configurar o arquivo `.vscode/launch.json`. Este arquivo informa ao VS Code como iniciar e anexar o depurador à sua aplicação Java.
+
+Se o arquivo não existir, siga os passos:
+
+1.  Crie uma pasta `.vscode` na raiz do projeto.
+2.  Dentro dela, crie um arquivo `launch.json`.
+3.  Copie e cole o seguinte conteúdo no arquivo:
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Bff-bank Local",
+            "request": "launch",
+            "mainClass": "br.com.fabioalvaro.bank123.bffbank.BffbankApplication",
+            "projectName": "bffbank",
+            "args": "",
+            "env": {
+                "DB_USERNAME": "bank123",
+                "DB_PASSWORD": "senhabank123"
+            },
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
+```
+
+#### O que essa configuração faz?
+
+-   **`"type": "java"`**: Informa que estamos depurando uma aplicação Java.
+-   **`"name": "Bff-bank Local"`**: Nome amigável para esta configuração, que aparecerá no menu "Run and Debug".
+-   **`"request": "launch"`**: Inicia a aplicação em modo de depuração.
+-   **`"mainClass"`**: Aponta para a classe principal que inicia o Spring Boot.
+-   **`"env"`**: Injeta as credenciais do banco de dados como variáveis de ambiente, para que você não precise exportá-las manualmente no terminal.
+
+Com o arquivo salvo, para iniciar a depuração:
+
 1.  Abra o painel "Run and Debug" (Ctrl+Shift+D ou Cmd+Shift+D).
-2.  Selecione a configuração "Spring Boot-BffbankApplication".
+2.  Selecione a configuração "Bff-bank Local" no menu.
 3.  Clique no botão de iniciar (seta verde).
 
 Se tudo der certo, o serviço vai subir e ficar esperando a bola chegar na porta `8080`.
@@ -114,4 +153,7 @@ Pra ver se a zaga tá firme e o ataque tá afiado, rode nossa bateria de testes:
 
 ## 📖 API
 
-Quer saber quais são as jogadas ensaiadas? Todos os nossos endpoints estão documentados no arquivo `swagger-bff-bank123.yaml`, seguindo o padrão OpenAPI 3.0. É o nosso VAR, pra não ter dúvida no lance!
+A documentação oficial do BFF, no padrão OpenAPI 3.0, pode ser acessada em tempo real no endereço:
+**`http://localhost:8080/v3/api-docs`**
+
+Você também pode obter a definição completa da API no formato JSON através do arquivo `bff-bank123-openapi.json`, que é gerado quando a aplicação está rodando.
