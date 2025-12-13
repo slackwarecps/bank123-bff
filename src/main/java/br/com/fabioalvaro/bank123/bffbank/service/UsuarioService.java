@@ -19,14 +19,14 @@ public class UsuarioService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public PerfilResponse getPerfil(String userId) {
-        Integer numeroConta = Integer.parseInt(userId);
-        // Busca o cliente pelo numero da conta
-        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(numeroConta);
+    public PerfilResponse getPerfil(String userId, Integer xAccountId, String xCorrelationId, String authorization) {
+        
+        // Busca o cliente pelo numero da conta recebido no header x-account-id
+        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(xAccountId);
 
         if (clienteOptional.isEmpty()) {
             // Se não encontrar o cliente, lança uma exceção.
-            throw new RuntimeException("Cliente não encontrado para a conta: " + numeroConta);
+            throw new RuntimeException("Cliente não encontrado para a conta: " + xAccountId);
         }
 
         Cliente cliente = clienteOptional.get();
