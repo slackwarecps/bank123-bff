@@ -166,6 +166,46 @@ O `docker-compose.yml` agora lê a senha do PostgreSQL de um arquivo `.env`:
 *   O arquivo `serviceAccountKey.json` (baixado do seu projeto Firebase) deve ser colocado na pasta `src/main/resources/`.
 *   Este arquivo também foi adicionado ao `.gitignore` e **não deve ser versionado** devido à sua natureza sensível. Obtenha-o de forma segura e não o inclua no controle de versão.
 
+### 5. Logs Centralizados com Loki
+
+Para o envio de logs centralizados para o Loki, o `logback-spring.xml` foi configurado para utilizar variáveis de ambiente para as credenciais de autenticação. Isso garante que as informações sensíveis não sejam expostas no código-fonte.
+
+*   **Configuração:**
+    As credenciais para o Loki (usuário e senha) são lidas das seguintes variáveis de ambiente:
+    ```
+    LOKI_USERNAME
+    LOKI_PASSWORD
+    ```
+
+*   **Para execução via Maven (`./mvnw spring-boot:run`):**
+    Defina as variáveis de ambiente antes de executar o comando:
+    ```bash
+    export LOKI_USERNAME=seu_usuario_loki
+    export LOKI_PASSWORD=sua_senha_loki
+    ./mvnw spring-boot:run
+    ```
+
+*   **Para execução via VS Code (`launch.json`):**
+    Adicione as variáveis de ambiente ao seu arquivo `.vscode/launch.json`:
+    ```json
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                // ... outras configurações ...
+                "env": {
+                    "DB_USERNAME": "bank123",
+                    "DB_PASSWORD": "senhabank123",
+                    "LOKI_USERNAME": "seu_usuario_loki",
+                    "LOKI_PASSWORD": "sua_senha_loki"
+                },
+                // ... restante da configuração ...
+            }
+        ]
+    }
+    ```
+    Lembre-se de substituir `seu_usuario_loki` e `sua_senha_loki` pelos valores reais das suas credenciais do Loki.
+
 ## ▶️ Como Executar (Apito Inicial)
 
 ### Via Maven Wrapper:
