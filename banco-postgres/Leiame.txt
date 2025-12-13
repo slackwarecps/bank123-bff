@@ -1,0 +1,4 @@
+## GERAR BACKUP
+
+docker exec -t bank123-postgres pg_dump -U bank123 bank123_db > dump-bank123-v15.sql
+

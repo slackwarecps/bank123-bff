@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: bank123-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: bank123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: bank123_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Mapeia o script de inicialização para ser executado na criação do container
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Persistência dos dados para não perder se reiniciar o container
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,8 +1,21 @@
 # Compiled class file
 *.class
 
-# Log file
+# Arquivos de Chave e configuração sensivel
+serviceAccountKey.json
+.env
+
+# Log files
 *.log
+
+# VSCode
+.vscode/
+
+# Pasta de build do Maven
+target/
+
+# Arquivos do sistema
+.DS_Store
 
 # BlueJ files
 *.ctxt

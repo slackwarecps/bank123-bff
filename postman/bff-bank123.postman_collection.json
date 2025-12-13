@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "d483a622-31f3-47cd-8114-a163bd8a1f5b",
+		"name": "bff-bank123",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23741639",
+		"_collection_link": "https://www.postman.com/martian-resonance-528707/workspace/tcc-bank-123/collection/23741639-d483a622-31f3-47cd-8114-a163bd8a1f5b?action=share&source=collection_link&creator=23741639"
+	},
+	"item": [
+		{
+			"name": "get extrato",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-account-id",
+						"value": "{{conta-id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-correlationId",
+						"value": "{{$randomUUID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/bff-bank123/extrato/v1/listagem",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"bff-bank123",
+						"extrato",
+						"v1",
+						"listagem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get saldo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-account-id",
+						"value": "{{conta-id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-correlationId",
+						"value": "{{$randomUUID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/bff-bank123/extrato/v1/saldo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"bff-bank123",
+						"extrato",
+						"v1",
+						"saldo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{vault:authorization-password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "user",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
