@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/bff-bank123/v1/perfil")
+@RequestMapping("/bff-bank123/usuario/v1/perfil")
 @Tag(name = "perfil-controller", description = "Gerencia operações relacionadas ao perfil do usuário")
 public class UsuarioController {
 
@@ -31,8 +31,6 @@ public class UsuarioController {
     })
     @GetMapping
     public ResponseEntity<PerfilResponse> obterPerfil(
-            @Parameter(description = "ID do usuário (Firebase UID)", required = true)
-            @RequestHeader("user-id") String userId,
             @Parameter(description = "ID da conta do usuário", required = true)
             @RequestHeader("x-account-id") Integer xAccountId,
             @Parameter(description = "ID de correlação para rastreamento de requisições", example = "uuid-fake")
@@ -40,7 +38,7 @@ public class UsuarioController {
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization) {
         
-        PerfilResponse perfil = usuarioService.getPerfil(xAccountId, xCorrelationId, authorization);
+        PerfilResponse perfil = usuarioService.getPerfil(xAccountId);
         return ResponseEntity.ok(perfil);
     }
 }

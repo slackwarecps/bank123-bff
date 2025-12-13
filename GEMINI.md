@@ -26,6 +26,7 @@ O projeto é um **BFF (Backend for Frontend)** para uma aplicação bancária, d
 -   **Estilo de Código:** Mantenha o estilo do código existente. Use as anotações do **Lombok** (`@Data`, `@AllArgsConstructor`, etc.) para evitar código boilerplate.
 -   **Imutabilidade:** Quando apropriado, prefira objetos imutáveis, especialmente em DTOs e respostas de serviço.
 -   **Tratamento de Erros:** Siga os padrões de tratamento de exceção do Spring Boot.
+- Nunca faca stage e commit sem me perguntar se deve ou nao fazer. o Padrao é nunca fazer.
 
 ## 4. Ferramentas e Comandos
 
