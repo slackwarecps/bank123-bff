@@ -47,6 +47,7 @@ O projeto é um **BFF (Backend for Frontend)** para uma aplicação bancária, d
 
 -   **Fonte da Verdade:** A documentação da API é gerada automaticamente pelo Springdoc a partir das anotações nos controllers (`@Operation`, `@ApiResponses`, etc.).
 -   **Modificações:** Ao adicionar ou modificar um endpoint, **sempre** atualize as anotações do OpenAPI diretamente no código Java do controller correspondente.
+-   **Visualização:** Os endpoints da API podem ser visualizados e testados através do Swagger UI em: `http://localhost:8080/swagger-ui/index.html#`
 
 ## 6. Commits e Controle de Versão
 
