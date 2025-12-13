@@ -44,7 +44,7 @@ public class Cliente {
     @Column(name = "endereco_cidade")
     private String enderecoCidade;
 
-    @Column(name = "endereco_estado", columnDefinition = "bpchar")
+    @Column(name = "endereco_estado")
     private String enderecoEstado;
 
     @Column(name = "endereco_cep")
