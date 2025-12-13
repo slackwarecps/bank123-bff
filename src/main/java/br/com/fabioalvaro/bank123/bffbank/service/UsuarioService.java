@@ -19,14 +19,17 @@ public class UsuarioService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public PerfilResponse getPerfil(String userId) {
-        Integer numeroConta = Integer.parseInt(userId);
-        // Busca o cliente pelo numero da conta
-        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(numeroConta);
+    public PerfilResponse getPerfil(String userId, Integer xAccountId, String xCorrelationId, String authorization) {
+        // Here, 'userId' is expected to be the Firebase UID, and 'xAccountId' is the account number.
+        // For now, we'll use xAccountId for database lookup as per the existing logic's intent.
+        // The 'userId' and 'authorization' can be used for actual user authentication/authorization in a real scenario.
+
+        // Busca o cliente pelo numero da conta (usando xAccountId como numero da conta)
+        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(xAccountId);
 
         if (clienteOptional.isEmpty()) {
             // Se não encontrar o cliente, lança uma exceção.
-            throw new RuntimeException("Cliente não encontrado para a conta: " + numeroConta);
+            throw new RuntimeException("Cliente não encontrado para a conta: " + xAccountId);
         }
 
         Cliente cliente = clienteOptional.get();
@@ -54,7 +57,7 @@ public class UsuarioService {
         return new PerfilResponse(
                 cliente.getNomeCompleto(),
                 endereco,
-                "Não aplicável",
+                "Não aplicável", // Agencia is not directly available in current models
                 conta.getNumeroConta()
         );
     }
