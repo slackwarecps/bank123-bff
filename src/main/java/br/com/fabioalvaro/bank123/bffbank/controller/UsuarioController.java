@@ -40,7 +40,7 @@ public class UsuarioController {
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization) {
         
-        PerfilResponse perfil = usuarioService.getPerfil(userId, xAccountId, xCorrelationId, authorization);
+        PerfilResponse perfil = usuarioService.getPerfil(xAccountId, xCorrelationId, authorization);
         return ResponseEntity.ok(perfil);
     }
 }

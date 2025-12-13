@@ -19,7 +19,7 @@ public class UsuarioService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public PerfilResponse getPerfil(String userId, Integer xAccountId, String xCorrelationId, String authorization) {
+    public PerfilResponse getPerfil(Integer xAccountId, String xCorrelationId, String authorization) {
         
         // Busca o cliente pelo numero da conta recebido no header x-account-id
         Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(xAccountId);
