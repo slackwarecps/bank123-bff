@@ -1,6 +1,6 @@
 # BFF Bank123
 
-E aí, meu consagrado! Bem-vindo ao coração da nossa máquina, o BFF (Backend for Frontend) do projeto Bank123.
+Bem-vindo ao coração da nossa máquina, o BFF (Backend for Frontend) do projeto Bank123.
 
 Pense nele como o meio-campo habilidoso: ele não aparece na foto do gol, mas é ele quem organiza a jogada, pega os dados lá na defesa (banco de dados) e entrega a bola redondinha pro atacante (o aplicativo Flutter) só empurrar pra rede.
 
