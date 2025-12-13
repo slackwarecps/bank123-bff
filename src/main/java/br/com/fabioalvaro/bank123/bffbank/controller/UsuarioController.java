@@ -34,7 +34,7 @@ public class UsuarioController {
             @Parameter(description = "ID da conta do usuário", required = true)
             @RequestHeader("x-account-id") Integer xAccountId,
             @Parameter(description = "ID de correlação para rastreamento de requisições", example = "uuid-fake")
-            @RequestHeader(value = "x-correlationId", defaultValue = "uuid-fake") String xCorrelationId,
+            @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String xCorrelationId,
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization) {
         

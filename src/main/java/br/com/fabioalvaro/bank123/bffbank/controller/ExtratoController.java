@@ -21,10 +21,10 @@ public class ExtratoController {
     public ResponseEntity<SaldoResponse> consultarSaldo(
             @RequestHeader(value = "Authorization", required = false) String token, // Opcional por enquanto
             @RequestHeader("x-account-id") Integer accountId,
-            @RequestHeader(value = "x-correlationId", defaultValue = "uuid-fake") String correlationId) {
+            @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String correlationId) {
         
         // Log para rastreamento
-        MDC.put("correlationId", correlationId);
+        MDC.put("correlation-id", correlationId);
         System.out.println("Consultando saldo para conta: " + accountId);
 
         try {
@@ -39,9 +39,9 @@ public class ExtratoController {
     public ResponseEntity<List<TransacaoResponse>> listarExtrato(
             @RequestHeader(value = "Authorization", required = false) String token,
             @RequestHeader("x-account-id") Integer accountId,
-            @RequestHeader(value = "x-correlationId", defaultValue = "uuid-fake") String correlationId) {
+            @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String correlationId) {
         
-        MDC.put("correlationId", correlationId);
+        MDC.put("correlation-id", correlationId);
         System.out.println("Consultando extrato para conta: " + accountId);
         
         try {

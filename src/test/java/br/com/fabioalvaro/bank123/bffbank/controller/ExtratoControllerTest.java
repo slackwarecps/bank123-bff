@@ -40,11 +40,9 @@ public class ExtratoControllerTest {
 
         when(extratoService.buscarSaldo(numeroConta)).thenReturn(saldoResponse);
 
-        // Act & Assert
-        mockMvc.perform(get("/bff-bank123/extrato/v1/saldo")
-                        .header("x-account-id", numeroConta)
-                        .header("x-correlationId", "test-id")
-                        .accept(MediaType.APPLICATION_JSON))
+                mockMvc.perform(get("/bff-bank123/extrato/v1/saldo")
+                                .header("x-account-id", numeroConta)
+                                .header("x-correlation-id", "test-id")                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.numeroConta").value(numeroConta))
                 .andExpect(jsonPath("$.saldo").value(saldo.doubleValue()));
@@ -68,7 +66,7 @@ public class ExtratoControllerTest {
         // Act & Assert
         mockMvc.perform(get("/bff-bank123/extrato/v1/listagem")
                         .header("x-account-id", numeroConta)
-                        .header("x-correlationId", "test-id")
+                        .header("x-correlation-id", "test-id")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
