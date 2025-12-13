@@ -1,0 +1,5 @@
+description = "Sobe e comita no git"
+prompt = """
+Analise os arquivos modificados no git.
+commit e faca o push do codigo para a branch remota.
+"""
