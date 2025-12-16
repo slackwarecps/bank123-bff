@@ -1,4 +1,4 @@
-# Força o Nixpacks a usar o Maven e a ignorar outros detectores
+# Força o Nixpacks a usar o Maven e a ignorar outros detectores !!!
 [phases]
 build = "mvn clean install -DskipTests"
 start = "java -jar target/*.jar"
