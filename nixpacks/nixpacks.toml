@@ -1,0 +1,7 @@
+# Força o Nixpacks a usar o Maven e a ignorar outros detectores !!!
+[phases]
+build = "mvn clean install -DskipTests"
+start = "java -jar target/*.jar"
+
+[detectors]
+order = ["maven", "gradle"] # Coloca Maven e Gradle antes de Dart
