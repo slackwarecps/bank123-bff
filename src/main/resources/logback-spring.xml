@@ -24,6 +24,9 @@
             <message>
                 <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [trace=%X{x-correlation-id} user=%X{x-account-id}] message=%msg%n</pattern>
             </message>
+            <message class="com.github.loki4j.logback.JsonLayout">
+                <includeTimestamp>true</includeTimestamp>
+            </message>
             <sortByTime>true</sortByTime>
         </format>
     </appender>
