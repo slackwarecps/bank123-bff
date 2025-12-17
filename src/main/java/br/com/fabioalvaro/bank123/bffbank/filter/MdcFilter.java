@@ -26,6 +26,8 @@ public class MdcFilter implements Filter {
             correlationId = UUID.randomUUID().toString();
         }
         MDC.put("x-correlation-id", correlationId);
+        MDC.put("path", req.getRequestURI()); // Adiciona o Path da URL
+        MDC.put("method", req.getMethod());   // Adiciona o método (GET, POST)
         try {
             chain.doFilter(request, response);
         } finally {

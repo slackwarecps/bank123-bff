@@ -26,6 +26,8 @@
             </message>
             <message class="com.github.loki4j.logback.JsonLayout">
                 <includeTimestamp>true</includeTimestamp>
+                <includeMdc>true</includeMdc>
+                <includeContext>true</includeContext>
             </message>
             <sortByTime>true</sortByTime>
         </format>
