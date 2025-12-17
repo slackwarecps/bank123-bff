@@ -24,6 +24,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // API REST não precisa de CSRF
             .authorizeHttpRequests(auth -> auth
+                // Libera o actuator (health check)
+                .requestMatchers("/actuator/**").permitAll()
                 // Libera o Swagger UI e os docs da API
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 // Opcional: Liberar OPTIONS para CORS se o front estiver em outro domínio
