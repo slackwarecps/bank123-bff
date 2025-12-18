@@ -28,7 +28,11 @@
                 <includeTimestamp>true</includeTimestamp>
                 <includeMdc>true</includeMdc>
                 <includeContext>true</includeContext>
+                <includeLoggerName>true</includeLoggerName>
+                <includeMessage>true</includeMessage>
+                <flattenMdc>true</flattenMdc>
             </message>
+            
             <sortByTime>true</sortByTime>
         </format>
     </appender>
