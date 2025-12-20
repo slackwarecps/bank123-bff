@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/**").permitAll()
                 // Libera o Swagger UI e os docs da API
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                // Libera o webhook de onboarding
+                .requestMatchers("/onboarding/v1/webhook-firebase-add").permitAll()
                 // Opcional: Liberar OPTIONS para CORS se o front estiver em outro domínio
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // TODAS as outras requisições precisam de autenticação
