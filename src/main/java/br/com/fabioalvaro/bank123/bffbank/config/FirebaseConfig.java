@@ -11,8 +11,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 @Configuration
 public class FirebaseConfig {
+
+    @Bean
+    public FirebaseAuth firebaseAuth(FirebaseApp firebaseApp) {
+        return FirebaseAuth.getInstance(firebaseApp);
+    }
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
