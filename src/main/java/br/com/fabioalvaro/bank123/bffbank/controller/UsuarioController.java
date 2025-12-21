@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Perfil não encontrado.")
     })
     @GetMapping
+    @PreAuthorize("hasAuthority('read:perfil')")
     public ResponseEntity<PerfilResponse> obterPerfil(
             @Parameter(description = "E-mail do usuário no Firebase", required = true)
             @RequestHeader("x-email-firebase") String xEmailFirebase,

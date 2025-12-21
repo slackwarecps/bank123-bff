@@ -6,6 +6,7 @@ import br.com.fabioalvaro.bank123.bffbank.service.ExtratoService;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ExtratoController {
     private ExtratoService service;
 
     @GetMapping("/saldo")
+    @PreAuthorize("hasAuthority('read:saldo')")
     public ResponseEntity<SaldoResponse> consultarSaldo(
             @RequestHeader(value = "Authorization", required = false) String token, // Opcional por enquanto
             @RequestHeader("x-account-id") Integer accountId,
@@ -36,6 +38,7 @@ public class ExtratoController {
     }
 
     @GetMapping("/listagem")
+    @PreAuthorize("hasAuthority('read:extrato')")
     public ResponseEntity<List<TransacaoResponse>> listarExtrato(
             @RequestHeader(value = "Authorization", required = false) String token,
             @RequestHeader("x-account-id") Integer accountId,
