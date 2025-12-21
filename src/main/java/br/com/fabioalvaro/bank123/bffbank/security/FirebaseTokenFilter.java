@@ -56,12 +56,19 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
             // Tenta obter de bank123/jwt/claims (formato aninhado do usuário)
             Object customClaims = decodedToken.getClaims().get("bank123/jwt/claims");
             Object scopeClaim = null;
+            Object roleClaim = null;
             
             if (customClaims instanceof java.util.Map) {
                 java.util.Map<String, Object> claimsMap = (java.util.Map<String, Object>) customClaims;
+                
+                // Extrai Scopes
                 scopeClaim = claimsMap.get("scope");
                 if (scopeClaim == null) scopeClaim = claimsMap.get("scp");
                 if (scopeClaim == null) scopeClaim = claimsMap.get("permissions");
+
+                // Extrai Roles (prioriza default_role, depois allowed_roles)
+                roleClaim = claimsMap.get("default_role");
+                if (roleClaim == null) roleClaim = claimsMap.get("allowed_roles");
             }
             
             // Se não encontrou no aninhado, tenta na raiz
@@ -71,17 +78,35 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
                 if (scopeClaim == null) scopeClaim = decodedToken.getClaims().get("permissions");
             }
 
+            if (roleClaim == null) {
+                roleClaim = decodedToken.getClaims().get("role");
+                if (roleClaim == null) roleClaim = decodedToken.getClaims().get("roles");
+            }
+
+            // Processa Scopes
             if (scopeClaim != null) {
                 if (scopeClaim instanceof String) {
                     String[] scopes = ((String) scopeClaim).split(" ");
-                    authorities = Arrays.stream(scopes)
+                    authorities.addAll(Arrays.stream(scopes)
                             .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toList()));
                 } else if (scopeClaim instanceof List) {
-                    authorities = ((List<?>) scopeClaim).stream()
+                    authorities.addAll(((List<?>) scopeClaim).stream()
                             .map(Object::toString)
                             .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toList()));
+                }
+            }
+
+            // Processa Roles
+            if (roleClaim != null) {
+                if (roleClaim instanceof String) {
+                    authorities.add(new SimpleGrantedAuthority((String) roleClaim));
+                } else if (roleClaim instanceof List) {
+                    authorities.addAll(((List<?>) roleClaim).stream()
+                            .map(Object::toString)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList()));
                 }
             }
             
