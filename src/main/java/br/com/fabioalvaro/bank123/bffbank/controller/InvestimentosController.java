@@ -33,7 +33,7 @@ public class InvestimentosController {
                     content = @Content(schema = @Schema(implementation = CarteiraResponse.class)))
     })
     @GetMapping("/carteira")
-    @PreAuthorize("hasAuthority('read:investimentos')")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:investimentos')")
     public ResponseEntity<CarteiraResponse> consultarCarteira(
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization,

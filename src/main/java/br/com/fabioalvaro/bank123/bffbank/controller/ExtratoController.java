@@ -19,7 +19,7 @@ public class ExtratoController {
     private ExtratoService service;
 
     @GetMapping("/saldo")
-    @PreAuthorize("hasAuthority('read:saldo')")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:saldo')")
     public ResponseEntity<SaldoResponse> consultarSaldo(
             @RequestHeader(value = "Authorization", required = false) String token, // Opcional por enquanto
             @RequestHeader("x-account-id") Integer accountId,
@@ -38,7 +38,7 @@ public class ExtratoController {
     }
 
     @GetMapping("/listagem")
-    @PreAuthorize("hasAuthority('read:extrato')")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:extrato')")
     public ResponseEntity<List<TransacaoResponse>> listarExtrato(
             @RequestHeader(value = "Authorization", required = false) String token,
             @RequestHeader("x-account-id") Integer accountId,

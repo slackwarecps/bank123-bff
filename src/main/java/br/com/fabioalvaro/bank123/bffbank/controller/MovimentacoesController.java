@@ -29,7 +29,7 @@ public class MovimentacoesController {
     })
     @PostMapping("/transferencia-conta")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('write:transacoes')")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('write:transacoes')")
     public ResponseEntity<TransferenciaContaRequest> transferenciaConta(
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization,

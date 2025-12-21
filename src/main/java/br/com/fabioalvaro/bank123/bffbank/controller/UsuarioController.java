@@ -31,7 +31,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Perfil não encontrado.")
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('read:perfil')")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:perfil')")
     public ResponseEntity<PerfilResponse> obterPerfil(
             @Parameter(description = "E-mail do usuário no Firebase", required = true)
             @RequestHeader("x-email-firebase") String xEmailFirebase,
