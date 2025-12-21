@@ -7,12 +7,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class FirebaseTokenFilter extends OncePerRequestFilter {
@@ -38,9 +44,19 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
             String email = decodedToken.getEmail();
+            
+            // Extrai claims/scopes
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            Object scopeClaim = decodedToken.getClaims().get("scope");
+            if (scopeClaim instanceof String) {
+                String[] scopes = ((String) scopeClaim).split(" ");
+                authorities = Arrays.stream(scopes)
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+            }
 
             // Cria a identidade do usuário no Spring Security
-            var auth = new UsernamePasswordAuthenticationToken(email, uid, Collections.emptyList());
+            var auth = new UsernamePasswordAuthenticationToken(email, uid, authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
         } catch (Exception e) {
