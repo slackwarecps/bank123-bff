@@ -281,3 +281,7 @@ Você pode visualizar e testar os endpoints através da interface amigável do S
 **`http://localhost:8080/swagger-ui/index.html`**
 
 Você também pode obter a definição completa da API no formato JSON através do arquivo `bff-bank123-openapi.json`, que é gerado quando a aplicação está rodando.
+
+## 📝 Requisitos Funcionais Implementados
+
+-   **Log de Webhook do Firebase:** Implementado log detalhado no console para o endpoint `/onboarding/v1/webhook-firebase-add`. Agora são registrados o REQUEST (Headers e Body) e o RESPONSE (Status Code, Headers e Body) para rastreabilidade completa. (20/12/2025)
