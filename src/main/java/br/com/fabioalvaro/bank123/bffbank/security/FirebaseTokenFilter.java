@@ -45,15 +45,48 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
             String uid = decodedToken.getUid();
             String email = decodedToken.getEmail();
             
+            // DEBUG: Imprimir todas as claims para análise
+            System.out.println("=== DEBUG: Claims do Token ===");
+            decodedToken.getClaims().forEach((k, v) -> System.out.println("Claim: " + k + " = " + v));
+            System.out.println("==============================");
+            
             // Extrai claims/scopes
             List<GrantedAuthority> authorities = new ArrayList<>();
-            Object scopeClaim = decodedToken.getClaims().get("scope");
-            if (scopeClaim instanceof String) {
-                String[] scopes = ((String) scopeClaim).split(" ");
-                authorities = Arrays.stream(scopes)
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+            
+            // Tenta obter de bank123/jwt/claims (formato aninhado do usuário)
+            Object customClaims = decodedToken.getClaims().get("bank123/jwt/claims");
+            Object scopeClaim = null;
+            
+            if (customClaims instanceof java.util.Map) {
+                java.util.Map<String, Object> claimsMap = (java.util.Map<String, Object>) customClaims;
+                scopeClaim = claimsMap.get("scope");
+                if (scopeClaim == null) scopeClaim = claimsMap.get("scp");
+                if (scopeClaim == null) scopeClaim = claimsMap.get("permissions");
             }
+            
+            // Se não encontrou no aninhado, tenta na raiz
+            if (scopeClaim == null) {
+                scopeClaim = decodedToken.getClaims().get("scope");
+                if (scopeClaim == null) scopeClaim = decodedToken.getClaims().get("scp");
+                if (scopeClaim == null) scopeClaim = decodedToken.getClaims().get("permissions");
+            }
+
+            if (scopeClaim != null) {
+                if (scopeClaim instanceof String) {
+                    String[] scopes = ((String) scopeClaim).split(" ");
+                    authorities = Arrays.stream(scopes)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
+                } else if (scopeClaim instanceof List) {
+                    authorities = ((List<?>) scopeClaim).stream()
+                            .map(Object::toString)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
+                }
+            }
+            
+            // DEBUG: Authorities extraídas
+            System.out.println("Authorities extraídas: " + authorities);
 
             // Cria a identidade do usuário no Spring Security
             var auth = new UsernamePasswordAuthenticationToken(email, uid, authorities);
