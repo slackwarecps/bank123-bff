@@ -19,43 +19,47 @@ public class UsuarioService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public PerfilResponse getPerfil(Integer xAccountId) {
+    public PerfilResponse getPerfil(String email) {
         
-        // Busca o cliente pelo numero da conta recebido no header x-account-id
-        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(xAccountId);
-
-        if (clienteOptional.isEmpty()) {
-            // Se não encontrar o cliente, lança uma exceção.
-            throw new RuntimeException("Cliente não encontrado para a conta: " + xAccountId);
-        }
-
-        Cliente cliente = clienteOptional.get();
-
-        // Busca a conta pelo numero da conta do cliente
-        Optional<Conta> contaOptional = contaRepository.findById(cliente.getNumeroConta());
+        // 1. Busca a conta pelo e-mail
+        Optional<Conta> contaOptional = contaRepository.findByEmail(email);
 
         if (contaOptional.isEmpty()) {
-            // Se não encontrar a conta, lança uma exceção.
-            throw new RuntimeException("Conta não encontrada para o cliente: " + cliente.getNomeCompleto());
+            throw new RuntimeException("Conta não encontrada para o e-mail: " + email);
         }
 
         Conta conta = contaOptional.get();
 
-        String endereco = String.format("%s, %s - %s, %s - %s, %s",
-                cliente.getEnderecoLogradouro(),
-                cliente.getEnderecoNumero(),
-                cliente.getEnderecoBairro(),
-                cliente.getEnderecoCidade(),
-                cliente.getEnderecoEstado(),
-                cliente.getEnderecoCep());
+        // 2. Tenta buscar o cliente associado à conta
+        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(conta.getNumeroConta());
 
+        String nomeCompleto = null;
+        String endereco = null;
 
-        // Mapeia os dados da entidade Conta para o DTO de resposta
+        if (clienteOptional.isPresent()) {
+            Cliente cliente = clienteOptional.get();
+            nomeCompleto = cliente.getNomeCompleto();
+            endereco = String.format("%s, %s - %s, %s - %s, %s",
+                    cliente.getEnderecoLogradouro(),
+                    cliente.getEnderecoNumero(),
+                    cliente.getEnderecoBairro(),
+                    cliente.getEnderecoCidade(),
+                    cliente.getEnderecoEstado(),
+                    cliente.getEnderecoCep());
+        } else {
+            // Caso onde a conta existe (via onboarding) mas o cliente ainda não completou o cadastro
+            nomeCompleto = conta.getEmail(); // Fallback para o email ou outro identificador
+            endereco = "Cadastro incompleto";
+        }
+
+        // 3. Monta a resposta com dados da Conta e do Cliente (se existir)
         return new PerfilResponse(
-                cliente.getNomeCompleto(),
+                nomeCompleto,
                 endereco,
-                "Não aplicável",
-                conta.getNumeroConta()
+                "0001", // Agência fixa por enquanto
+                conta.getNumeroConta(),
+                conta.getIdUserFirebase(),
+                conta.getStatus()
         );
     }
 }

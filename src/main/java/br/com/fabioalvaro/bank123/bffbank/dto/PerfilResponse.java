@@ -12,4 +12,6 @@ public class PerfilResponse {
     private String endereco;
     private String agencia;
     private Integer numeroConta;
+    private String idUserFirebase;
+    private String status;
 }

@@ -31,14 +31,14 @@ public class UsuarioController {
     })
     @GetMapping
     public ResponseEntity<PerfilResponse> obterPerfil(
-            @Parameter(description = "ID da conta do usuário", required = true)
-            @RequestHeader("x-account-id") Integer xAccountId,
+            @Parameter(description = "E-mail do usuário no Firebase", required = true)
+            @RequestHeader("x-email-firebase") String xEmailFirebase,
             @Parameter(description = "ID de correlação para rastreamento de requisições", example = "uuid-fake")
             @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String xCorrelationId,
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization) {
         
-        PerfilResponse perfil = usuarioService.getPerfil(xAccountId);
+        PerfilResponse perfil = usuarioService.getPerfil(xEmailFirebase);
         return ResponseEntity.ok(perfil);
     }
 }

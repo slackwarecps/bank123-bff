@@ -72,14 +72,38 @@ ALTER SEQUENCE public.clientes_id_cliente_seq OWNED BY public.clientes.id_client
 -- Name: contas; Type: TABLE; Schema: public; Owner: bank123
 --
 
+CREATE SEQUENCE public.contas_numeroconta_seq
+    AS integer
+    START WITH 123457
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.contas_numeroconta_seq OWNER TO bank123;
+
+--
+-- Name: contas; Type: TABLE; Schema: public; Owner: bank123
+--
+
 CREATE TABLE public.contas (
-    numeroconta integer NOT NULL,
+    numeroconta integer NOT NULL DEFAULT nextval('public.contas_numeroconta_seq'::regclass),
     datacriacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    saldo numeric(15,2) NOT NULL
+    saldo numeric(15,2) NOT NULL,
+    email character varying(150),
+    id_user_firebase character varying(100),
+    status character varying(20) DEFAULT 'ativa'::character varying
 );
 
 
 ALTER TABLE public.contas OWNER TO bank123;
+
+--
+-- Name: contas_numeroconta_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bank123
+--
+
+ALTER SEQUENCE public.contas_numeroconta_seq OWNED BY public.contas.numeroconta;
 
 --
 -- Name: livrocaixa; Type: TABLE; Schema: public; Owner: bank123
@@ -148,8 +172,8 @@ COPY public.clientes (id_cliente, nome_completo, cpf, email, data_nascimento, en
 -- Data for Name: contas; Type: TABLE DATA; Schema: public; Owner: bank123
 --
 
-COPY public.contas (numeroconta, datacriacao, saldo) FROM stdin;
-123456	2025-12-13 10:04:07.770759	1000.00
+COPY public.contas (numeroconta, datacriacao, saldo, email, id_user_firebase, status) FROM stdin;
+123456	2025-12-13 10:04:07.770759	1000.00	fabio.pereira@bank123.com	\N	ativa
 \.
 
 

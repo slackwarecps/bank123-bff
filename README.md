@@ -285,3 +285,5 @@ Você também pode obter a definição completa da API no formato JSON através 
 ## 📝 Requisitos Funcionais Implementados
 
 -   **Log de Webhook do Firebase:** Implementado log detalhado no console para o endpoint `/onboarding/v1/webhook-firebase-add`. Agora são registrados o REQUEST (Headers e Body) e o RESPONSE (Status Code, Headers e Body) para rastreabilidade completa. (20/12/2025)
+-   **Criação Automática de Conta (Onboarding):** Ao receber o webhook do Firebase em `/onboarding/v1/webhook-firebase-add`, o sistema agora cria automaticamente um registro na tabela `contas` com os dados do usuário (email, uid do Firebase), define o status como 'ativa', saldo zero e gera um novo número de conta sequencial. (20/12/2025)
+-   **Busca de Perfil por E-mail:** O endpoint de perfil (`/bff-bank123/usuario/v1/perfil`) foi alterado para buscar o usuário através do header `x-email-firebase`, permitindo a recuperação dos dados da conta e do perfil (se houver) usando o e-mail como identificador principal. (20/12/2025)

@@ -11,13 +11,23 @@ import java.time.LocalDateTime;
 public class Conta {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contas_numeroconta_seq")
+    @SequenceGenerator(name = "contas_numeroconta_seq", sequenceName = "contas_numeroconta_seq", allocationSize = 1)
     @Column(name = "numeroconta")
     private Integer numeroConta;
-
 
     @Column(name = "datacriacao")
     private LocalDateTime dataCriacao;
 
     @Column(name = "saldo")
     private BigDecimal saldo;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "id_user_firebase")
+    private String idUserFirebase;
+
+    @Column(name = "status")
+    private String status;
 }
