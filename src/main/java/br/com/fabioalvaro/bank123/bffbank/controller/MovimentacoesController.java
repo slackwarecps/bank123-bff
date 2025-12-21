@@ -1,6 +1,8 @@
 package br.com.fabioalvaro.bank123.bffbank.controller;
 
 import br.com.fabioalvaro.bank123.bffbank.dto.TransferenciaContaRequest;
+import br.com.fabioalvaro.bank123.bffbank.dto.TransferenciaContaResponse;
+import br.com.fabioalvaro.bank123.bffbank.service.MovimentacoesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,15 +24,17 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "movimentacoes-controller", description = "API de Movimentações")
 public class MovimentacoesController {
 
+    private final MovimentacoesService movimentacoesService;
+
     @Operation(summary = "Realizar Transferência entre Contas", operationId = "transferenciaConta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Transferência criada com sucesso",
-                    content = @Content(schema = @Schema(implementation = TransferenciaContaRequest.class)))
+                    content = @Content(schema = @Schema(implementation = TransferenciaContaResponse.class)))
     })
     @PostMapping("/transferencia-conta")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('write:transacoes')")
-    public ResponseEntity<TransferenciaContaRequest> transferenciaConta(
+    public ResponseEntity<TransferenciaContaResponse> transferenciaConta(
             @Parameter(description = "Token de autorização JWT", required = false)
             @RequestHeader(value = "Authorization", required = false) String authorization,
 
@@ -44,6 +48,9 @@ public class MovimentacoesController {
     ) {
         log.info("Processando transferência para accountId: {}, valor: {}, correlationId: {}", 
                 accountId, request.getValor(), correlationId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(request);
+        
+        TransferenciaContaResponse response = movimentacoesService.realizarTransferencia(accountId, correlationId, request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

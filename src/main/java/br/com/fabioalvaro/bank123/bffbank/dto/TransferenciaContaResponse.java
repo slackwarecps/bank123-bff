@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransferenciaContaRequest {
+public class TransferenciaContaResponse {
     private String valor;
 
-    @JsonProperty("destino-conta")
-    private String destinoConta;
+    @JsonProperty("transacao-id")
+    private String transacaoId;
 }
