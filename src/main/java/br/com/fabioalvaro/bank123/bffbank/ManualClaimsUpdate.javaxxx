@@ -1,0 +1,82 @@
+package br.com.fabioalvaro.bank123.bffbank;
+
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ManualClaimsUpdate {
+
+    public static void main(String[] args) {
+        try {
+            // 1. CAMINHO ABSOLUTO (Aponta direto para o arquivo que você salvou)
+            String pasta = "/Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff/src/main/resources/";
+            String arquivo = "serviceAccountKey.json"; // Confirme se o nome é esse mesmo
+            String caminhoCompleto = pasta + arquivo;
+
+            System.out.println("📂 Lendo arquivo de: " + caminhoCompleto);
+
+            // -------------------------------------------------------------------
+            // PARTE A: Teste de Conexão e Claims
+            // -------------------------------------------------------------------
+            
+            // Limpa o Firebase se já estiver na memória
+            if (!FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.getApps().forEach(FirebaseApp::delete);
+            }
+
+            // Lê direto do disco (sem passar pelo classpath do Maven)
+            FileInputStream serviceAccount = new FileInputStream(caminhoCompleto);
+
+            FirebaseOptions options = FirebaseOptions.builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
+
+            FirebaseApp.initializeApp(options);
+            System.out.println("🔥 Firebase conectado com sucesso!");
+
+            // Dados para o update
+            String targetUid = "B3Bajpk5XTMcxB4ezRcy40sMJY62";
+            Integer numeroConta = 123456;
+
+            Map<String, Object> appClaims = new HashMap<>();
+            appClaims.put("numeroconta", numeroConta);
+            appClaims.put("default_role", "cliente_pf");
+            appClaims.put("allowed_roles", List.of("cliente_pf"));
+            appClaims.put("scope", "read:saldo read:extrato write:transacoes read:perfil");
+
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("bank123/jwt/claims", appClaims);
+
+            System.out.println("⏳ Aplicando claims...");
+            FirebaseAuth.getInstance().setCustomUserClaims(targetUid, claims);
+            System.out.println("✅ SUCESSO! Claims aplicadas. O arquivo é válido.");
+
+            // -------------------------------------------------------------------
+            // PARTE B: Gerador de Base64 para Produção
+            // -------------------------------------------------------------------
+            System.out.println("\n--- [ GERADOR DE BASE64 PARA ENV VAR ] ---");
+            byte[] fileContent = Files.readAllBytes(Paths.get(caminhoCompleto));
+            String base64 = Base64.getEncoder().encodeToString(fileContent);
+            
+            System.out.println("Copie o código abaixo para sua variável FIREBASE_KEY_JSON:");
+            System.out.println("");
+            System.out.println(base64);
+            System.out.println("");
+            System.out.println("------------------------------------------");
+
+        } catch (Exception e) {
+            System.err.println("❌ ERRO: " + e.getMessage());
+            e.printStackTrace();
+            System.err.println("\nDICA: Verifique se o arquivo se chama 'serviceAccountKey.json' mesmo.");
+        }
+    }
+}

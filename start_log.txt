@@ -25,6 +25,12 @@
 [INFO] --- spring-boot-maven-plugin:3.5.8:run (default-cli) @ bffbank ---
 [INFO] Attaching agents: []
 Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+10:20:31,574 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeTimestamp] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeMdc] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeContext] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeLoggerName] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeMessage] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [flattenMdc] in [com.github.loki4j.logback.JsonLayout]
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -35,143 +41,66 @@ Standard Commons Logging discovery in action with spring-jcl: please remove comm
 
  :: Spring Boot ::                (v3.5.8)
 
-08:38:29.969 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] Starting BffbankApplication using Java 17.0.7 with PID 53445 (/Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff/target/classes started by fabioalvaropereira in /Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff)
-08:38:29.973 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] No active profile set, falling back to 1 default profile: "default"
-08:38:30.891 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [trace= user=] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-08:38:30.960 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [trace= user=] Finished Spring Data repository scanning in 57 ms. Found 3 JPA repository interfaces.
-08:38:31.719 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [trace= user=] Tomcat initialized with port 8080 (http)
-08:38:31.742 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [trace= user=] Initializing ProtocolHandler ["http-nio-8080"]
-08:38:31.744 [main] INFO  o.a.catalina.core.StandardService - [trace= user=] Starting service [Tomcat]
-08:38:31.745 [main] INFO  o.a.catalina.core.StandardEngine - [trace= user=] Starting Servlet engine: [Apache Tomcat/10.1.49]
-08:38:31.811 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [trace= user=] Initializing Spring embedded WebApplicationContext
-08:38:31.812 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [trace= user=] Root WebApplicationContext: initialization completed in 1805 ms
+10:20:31.837 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] Starting BffbankApplication using Java 17.0.7 with PID 5972 (/Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff/target/classes started by fabioalvaropereira in /Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff)
+10:20:31.840 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] The following 1 profile is active: "local"
+10:20:33.110 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [trace= user=] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+10:20:33.185 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [trace= user=] Finished Spring Data repository scanning in 62 ms. Found 3 JPA repository interfaces.
+10:20:33.783 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [trace= user=] Tomcat initialized with port 8080 (http)
+10:20:33.798 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [trace= user=] Initializing ProtocolHandler ["http-nio-8080"]
+10:20:33.800 [main] INFO  o.a.catalina.core.StandardService - [trace= user=] Starting service [Tomcat]
+10:20:33.800 [main] INFO  o.a.catalina.core.StandardEngine - [trace= user=] Starting Servlet engine: [Apache Tomcat/10.1.49]
+10:20:33.870 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [trace= user=] Initializing Spring embedded WebApplicationContext
+10:20:33.871 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [trace= user=] Root WebApplicationContext: initialization completed in 1994 ms
 Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
-08:38:32.001 [main] INFO  o.h.jpa.internal.util.LogHelper - [trace= user=] HHH000204: Processing PersistenceUnitInfo [name: default]
-08:38:32.081 [main] INFO  org.hibernate.Version - [trace= user=] HHH000412: Hibernate ORM core version 6.6.36.Final
-08:38:32.126 [main] INFO  o.h.c.i.RegionFactoryInitiator - [trace= user=] HHH000026: Second-level cache disabled
-08:38:32.409 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - [trace= user=] No LoadTimeWeaver setup: ignoring JPA class transformer
-08:38:32.440 [main] INFO  com.zaxxer.hikari.HikariDataSource - [trace= user=] HikariPool-1 - Starting...
-08:38:33.603 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - [trace= user=] SQL Error: 0, SQLState: 28P01
-08:38:33.604 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - [trace= user=] FATAL: password authentication failed for user "postgres"
-08:38:33.605 [main] WARN  o.h.e.j.e.i.JdbcEnvironmentInitiator - [trace= user=] HHH000342: Could not obtain connection to query metadata
-org.hibernate.exception.GenericJDBCException: unable to obtain isolated JDBC connection [FATAL: password authentication failed for user "postgres"] [n/a]
-	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:63)
-	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
-	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:334)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
-	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:973)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
-	at br.com.fabioalvaro.bank123.bffbank.BffbankApplication.main(BffbankApplication.java:10)
-Caused by: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
-	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:778)
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234)
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289)
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57)
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:279)
-	at org.postgresql.Driver.makeConnection(Driver.java:448)
-	at org.postgresql.Driver.connect(Driver.java:298)
-	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144)
-	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370)
-	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207)
-	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488)
-	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576)
-	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97)
-	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
-	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:485)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
-	... 35 common frames omitted
-08:38:33.609 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - [trace= user=] Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-08:38:33.609 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - [trace= user=] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-08:38:33.612 [main] INFO  o.a.catalina.core.StandardService - [trace= user=] Stopping service [Tomcat]
-08:38:33.626 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - [trace= user=] 
+10:20:34.164 [main] INFO  o.h.jpa.internal.util.LogHelper - [trace= user=] HHH000204: Processing PersistenceUnitInfo [name: default]
+10:20:34.237 [main] INFO  org.hibernate.Version - [trace= user=] HHH000412: Hibernate ORM core version 6.6.36.Final
+10:20:34.272 [main] INFO  o.h.c.i.RegionFactoryInitiator - [trace= user=] HHH000026: Second-level cache disabled
+10:20:34.557 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - [trace= user=] No LoadTimeWeaver setup: ignoring JPA class transformer
+10:20:34.587 [main] INFO  com.zaxxer.hikari.HikariDataSource - [trace= user=] HikariPool-1 - Starting...
+10:20:34.846 [main] INFO  com.zaxxer.hikari.pool.HikariPool - [trace= user=] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3de383f7
+10:20:34.848 [main] INFO  com.zaxxer.hikari.HikariDataSource - [trace= user=] HikariPool-1 - Start completed.
+10:20:34.998 [main] INFO  o.hibernate.orm.connections.pooling - [trace= user=] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+10:20:35.980 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - [trace= user=] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+10:20:36.087 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [trace= user=] Initialized JPA EntityManagerFactory for persistence unit 'default'
+Carregando credenciais do Firebase via variável de ambiente FIREBASE_KEY_JSON.
+Tamanho recebido: 3184
+Início da string: ewogICJ0eX
+Tentando decodificar Base64...
+Credenciais decodificadas de Base64 com sucesso.
+10:20:36.665 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - [trace= user=] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+10:20:36.986 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - [trace= user=] Exposing 1 endpoint beneath base path '/actuator'
+10:20:37.018 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - [trace= user=] 
 
-Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-08:38:33.647 [main] ERROR o.s.boot.SpringApplication - [trace= user=] Application run failed
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:973)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
-	at br.com.fabioalvaro.bank123.bffbank.BffbankApplication.main(BffbankApplication.java:10)
-Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:276)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
-	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822)
-	... 15 common frames omitted
-Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:191)
-	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:87)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:186)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:410)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
-	... 30 common frames omitted
+Using generated security password: 63f8918a-281e-4eac-870e-989d312b6c43
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+10:20:37.029 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - [trace= user=] Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+10:20:37.177 [main] INFO  o.s.v.b.OptionalValidatorFactoryBean - [trace= user=] Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+10:20:37.539 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [trace= user=] Starting ProtocolHandler ["http-nio-8080"]
+10:20:37.553 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [trace= user=] Tomcat started on port 8080 (http) with context path '/'
+10:20:37.573 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] Started BffbankApplication in 6.472 seconds (process running for 6.853)
+10:21:24.904 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [trace= user=] Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:21:24.904 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [trace= user=] Initializing Servlet 'dispatcherServlet'
+10:21:24.906 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [trace= user=] Completed initialization in 2 ms
+10:21:24.955 [http-nio-8080-exec-1] INFO  b.c.f.b.bffbank.filter.MdcFilter - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Nova request recebida: POST /comandos/v1/funcao-mudar-claim/123456 Headers: [host: localhost:8080 | user-agent: curl/8.7.1 | accept: */* | content-type: application/json | content-length: 39]
+10:21:25.048 [http-nio-8080-exec-1] INFO  b.c.f.b.b.c.ComandosController - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Recebida requisição para atualizar claims da conta: 123456 com UID: HL5dqdMBg5Wa01y073LJTzv87FS2
+10:21:25.049 [http-nio-8080-exec-1] INFO  b.c.f.b.b.service.OnboardingService - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Refazendo claims para a conta: 123456 com UID forçado: HL5dqdMBg5Wa01y073LJTzv87FS2
+10:21:26.258 [http-nio-8080-exec-1] INFO  b.c.f.b.b.service.OnboardingService - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Custom claims adicionadas ao usuário HL5dqdMBg5Wa01y073LJTzv87FS2: {bank123/jwt/claims={allowed_roles=[cliente_pf], numeroconta=123456, scope=read:saldo read:extrato write:transacoes read:perfil, default_role=cliente_pf}}
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.035 s
-[INFO] Finished at: 2025-12-16T08:38:34-03:00
+[INFO] Total time:  10:15 min
+[INFO] Finished at: 2025-12-21T10:30:43-03:00
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.5.8:run (default-cli) on project bffbank: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.5.8:run (default-cli) on project bffbank: Process terminated with exit code: 137 -> [Help 1]
 [ERROR] 
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
 [ERROR] Re-run Maven using the -X switch to enable full debug logging.

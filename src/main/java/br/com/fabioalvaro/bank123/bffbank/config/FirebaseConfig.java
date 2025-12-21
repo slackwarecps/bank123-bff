@@ -29,19 +29,35 @@ public class FirebaseConfig {
         if (firebaseKeyJson != null && !firebaseKeyJson.isBlank()) {
             System.out.println("Carregando credenciais do Firebase via variável de ambiente FIREBASE_KEY_JSON.");
             firebaseKeyJson = firebaseKeyJson.trim();
+            System.out.println("Tamanho recebido: " + firebaseKeyJson.length());
+            if (firebaseKeyJson.length() > 10) {
+                System.out.println("Início da string: " + firebaseKeyJson.substring(0, 10));
+            }
             
-            // Tenta decodar Base64 se não começar com '{'
-            if (!firebaseKeyJson.startsWith("{")) {
+            // Remove aspas duplas no início e fim, se existirem
+            if (firebaseKeyJson.startsWith("\"") && firebaseKeyJson.endsWith("\"")) {
+                firebaseKeyJson = firebaseKeyJson.substring(1, firebaseKeyJson.length() - 1);
+                System.out.println("Aspas removidas. Novo tamanho: " + firebaseKeyJson.length());
+            }
+
+            // Se não começar com '{', assumimos que é Base64
+            if (!firebaseKeyJson.trim().startsWith("{")) {
                 try {
-                    byte[] decoded = java.util.Base64.getDecoder().decode(firebaseKeyJson);
+                    System.out.println("Tentando decodificar Base64...");
+                    // Usar MimeDecoder pois ele ignora quebras de linha e espaços
+                    byte[] decoded = java.util.Base64.getMimeDecoder().decode(firebaseKeyJson);
                     String decodedString = new String(decoded, StandardCharsets.UTF_8);
+                    
                     if (decodedString.trim().startsWith("{")) {
                         System.out.println("Credenciais decodificadas de Base64 com sucesso.");
                         firebaseKeyJson = decodedString;
+                    } else {
+                        System.out.println("Decodificação resultou em algo que não é JSON: " + 
+                            (decodedString.length() > 10 ? decodedString.substring(0, 10) : decodedString));
                     }
-                } catch (IllegalArgumentException e) {
-                    // Não é Base64 válido, prossegue tentando usar como string original
-                    System.out.println("Aviso: Valor de FIREBASE_KEY_JSON não parece ser JSON nem Base64 válido. Tentando processar como está.");
+                } catch (Exception e) {
+                    System.err.println("Erro ao tentar decodificar FIREBASE_KEY_JSON: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 

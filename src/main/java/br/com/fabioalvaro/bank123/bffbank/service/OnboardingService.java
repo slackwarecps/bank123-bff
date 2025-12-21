@@ -47,7 +47,7 @@ public class OnboardingService {
         }
     }
 
-    private void adicionarClaimsAoUsuario(Conta conta) {
+    public void adicionarClaimsAoUsuario(Conta conta) {
         try {
             Map<String, Object> appClaims = new HashMap<>();
             appClaims.put("numeroconta", conta.getNumeroConta());
@@ -65,5 +65,30 @@ public class OnboardingService {
             // Não lançamos exceção aqui para não desfazer a criação da conta, 
             // mas poderia ser implementado um mecanismo de retry ou fila DLQ.
         }
+    }
+
+    public void refazerClaims(Integer numeroConta) {
+        log.info("Refazendo claims para a conta: {}", numeroConta);
+        Conta conta = contaRepository.findById(numeroConta)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + numeroConta));
+        adicionarClaimsAoUsuario(conta);
+    }
+
+    public void refazerClaims(Integer numeroConta, String uid) {
+        log.info("Refazendo claims para a conta: {} com UID forçado: {}", numeroConta, uid);
+        Conta conta = contaRepository.findById(numeroConta)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + numeroConta));
+        
+        // Atualiza o UID em memória para usar o fornecido no request
+        conta.setIdUserFirebase(uid);
+        
+        adicionarClaimsAoUsuario(conta);
+    }
+
+    public void refazerClaimsPorUid(String uid) {
+        log.info("Refazendo claims para o UID: {}", uid);
+        Conta conta = contaRepository.findByIdUserFirebase(uid)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada para o UID: " + uid));
+        adicionarClaimsAoUsuario(conta);
     }
 }

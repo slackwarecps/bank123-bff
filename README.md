@@ -272,6 +272,11 @@ Pra ver se a zaga tá firme e o ataque tá afiado, rode nossa bateria de testes:
 ./mvnw test
 ```
 
+## Ajustar chave ##
+cat serviceAccountKey.json | base64
+
+$ mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring-boot.run.arguments="--server.port=8080" -Dmaven.test.skip=true
+
 ## 📖 API
 
 A documentação oficial do BFF, no padrão OpenAPI 3.0, pode ser acessada em tempo real no endereço:
