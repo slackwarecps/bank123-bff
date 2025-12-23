@@ -1,0 +1,3906 @@
+Directory structure:
+└── bank123-bff/
+    ├── README.md
+    ├── bff-bank123-openapi.json
+    ├── GEMINI.md
+    ├── HELP.md
+    ├── mvnw
+    ├── mvnw.cmd
+    ├── pom.xml
+    ├── run_local.sh
+    ├── start_log.txt
+    ├── banco-postgres/
+    │   ├── backup-env-2025-12-23.sql
+    │   ├── docker-compose.yml
+    │   ├── init.sql
+    │   └── Leiame.txt
+    ├── nixpacks/
+    │   └── nixpacks.toml
+    ├── postman/
+    │   ├── bff-bank123.postman_collection.json
+    │   └── tcc-bank123_DEV.postman_environment.json
+    ├── src/
+    │   ├── main/
+    │   │   ├── java/
+    │   │   │   └── br/
+    │   │   │       └── com/
+    │   │   │           └── fabioalvaro/
+    │   │   │               └── bank123/
+    │   │   │                   └── bffbank/
+    │   │   │                       ├── BffbankApplication.java
+    │   │   │                       ├── ManualClaimsUpdate.javaxxx
+    │   │   │                       ├── config/
+    │   │   │                       │   ├── FirebaseConfig.java
+    │   │   │                       │   └── SecurityConfig.java
+    │   │   │                       ├── controller/
+    │   │   │                       │   ├── ComandosController.java
+    │   │   │                       │   ├── ExtratoController.java
+    │   │   │                       │   ├── InvestimentosController.java
+    │   │   │                       │   ├── MovimentacoesController.java
+    │   │   │                       │   ├── OnboardingController.java
+    │   │   │                       │   └── UsuarioController.java
+    │   │   │                       ├── dto/
+    │   │   │                       │   ├── CarteiraResponse.java
+    │   │   │                       │   ├── CarteiraResumoResponse.java
+    │   │   │                       │   ├── InvestimentoItemResponse.java
+    │   │   │                       │   ├── MudarClaimRequest.java
+    │   │   │                       │   ├── PerfilResponse.java
+    │   │   │                       │   ├── SaldoResponse.java
+    │   │   │                       │   ├── TransacaoResponse.java
+    │   │   │                       │   ├── TransferenciaContaRequest.java
+    │   │   │                       │   ├── TransferenciaContaResponse.java
+    │   │   │                       │   └── WebhookFirebasePayload.java
+    │   │   │                       ├── filter/
+    │   │   │                       │   └── MdcFilter.java
+    │   │   │                       ├── model/
+    │   │   │                       │   ├── Cliente.java
+    │   │   │                       │   ├── Conta.java
+    │   │   │                       │   └── LivroCaixa.java
+    │   │   │                       ├── repository/
+    │   │   │                       │   ├── ClienteRepository.java
+    │   │   │                       │   ├── ContaRepository.java
+    │   │   │                       │   └── LivroCaixaRepository.java
+    │   │   │                       ├── security/
+    │   │   │                       │   └── FirebaseTokenFilter.java
+    │   │   │                       └── service/
+    │   │   │                           ├── ExtratoService.java
+    │   │   │                           ├── InvestimentosService.java
+    │   │   │                           ├── MovimentacoesService.java
+    │   │   │                           ├── OnboardingService.java
+    │   │   │                           └── UsuarioService.java
+    │   │   └── resources/
+    │   │       ├── application.properties
+    │   │       └── logback-spring.xml
+    │   └── test/
+    │       ├── java/
+    │       │   └── br/
+    │       │       └── com/
+    │       │           └── fabioalvaro/
+    │       │               └── bank123/
+    │       │                   └── bffbank/
+    │       │                       ├── BffbankApplicationTests.java
+    │       │                       ├── config/
+    │       │                       │   └── FirebaseConfigTest.java
+    │       │                       └── controller/
+    │       │                           └── ExtratoControllerTest.java
+    │       └── resources/
+    │           └── application.properties
+    ├── .gemini/
+    │   ├── settings.json
+    │   ├── settings.json.orig
+    │   └── commands/
+    │       ├── analise-erro.toml
+    │       ├── gerar-backup-banco.toml
+    │       ├── subir-no-git.toml
+    │       └── teste-basico.toml
+    ├── .mvn/
+    │   └── wrapper/
+    │       ├── maven-wrapper.properties
+    │       └── MavenWrapperDownloader.java
+    └── .nixpacks/
+        └── nixpacks.toml
+
+================================================
+FILE: README.md
+================================================
+# BFF Bank123
+
+Bem-vindo ao coração da nossa máquina, o BFF (Backend for Frontend) do projeto Bank123.
+
+Pense nele como o meio-campo habilidoso: ele não aparece na foto do gol, mas é ele quem organiza a jogada, pega os dados lá na defesa (banco de dados) e entrega a bola redondinha pro atacante (o aplicativo Flutter) só empurrar pra rede.
+
+Este projeto é feito em **Java 17** com o **Spring Boot**, que é tipo a chuteira nova que a gente usa pra dar show em campo.
+
+## 🚀 Pilha Tecnológica (Nosso Esquema Tático)
+
+-   **Java 17**: O nosso camisa 10, a estrela do time.
+-   **Spring Boot**: O nosso técnico, que organiza a casa e deixa tudo pronto pra gente.
+-   **Maven**: O roupeiro, que cuida de todas as dependências e garante que ninguém entre em campo com o meião trocado.
+-   **PostgreSQL**: O nosso cofre, onde a gente guarda o suado dinheirinho dos nossos clientes.
+-   **Firebase Auth**: O segurança da balada. Só entra quem tiver o nome na lista (token JWT válido).
+-   **OpenAPI 3.0**: O nosso manual de táticas, com a documentação da API gerada automaticamente.
+
+## 🏗️ Arquitetura e Infraestrutura
+
+Este serviço opera no padrão **BFF (Backend for Frontend)**, servindo como a camada de lógica de negócios e orquestração de dados para a aplicação móvel. Ele foi desenhado para ser **Stateless** e **Containerizado**.
+
+### Visão Geral da Infraestrutura
+
+```mermaid
+graph LR
+    subgraph Client_Side [📱 Client Side]
+        FlutterApp[("Flutter App")]
+    end
+
+    subgraph External_Services [☁️ Serviços Externos]
+        FirebaseAuth[("🔥 Firebase Auth<br/>(IdP & JWKS)")]
+        DockerHub[("🐳 Docker Hub<br/>(Registry)")]
+    end
+
+    subgraph Cloud_Backend [☁️ Infraestrutura Backend]
+        style Cloud_Backend fill:#f9f9f9,stroke:#333,stroke-width:2px
+        
+        Gateway[("🛡️ API Gateway<br/>(Zuplo)")]
+        
+        subgraph PaaS_Render [Render.com]
+            SpringBoot[("☕ Spring Boot BFF<br/>(API Java)")]
+        end
+    end
+
+    subgraph BaaS_Supabase [⚡ Supabase]
+        style BaaS_Supabase fill:#3ECF8E,stroke:#333,stroke-width:2px,color:#fff
+        Postgres[("🐘 PostgreSQL<br/>(Database)")]
+    end
+
+    %% Fluxo de Autenticação Inicial
+    FlutterApp -- "1. Login" --> FirebaseAuth
+    FirebaseAuth -- "2. Retorna JWT" --> FlutterApp
+
+    %% Fluxo da Requisição
+    FlutterApp -- "3. Request + Token" --> Gateway
+    Gateway -- "4. Proxy / Roteamento" --> SpringBoot
+
+    %% Validação do Token (A mudança solicitada)
+    SpringBoot -- "5. Valida Assinatura/Token" --> FirebaseAuth
+    
+    %% Persistência
+    SpringBoot -- "6. Leitura/Escrita" --> Postgres
+
+    %% Deploy
+    DockerHub -. "7. Pull Image" .-> SpringBoot
+
+    %% Estilização
+    style FlutterApp fill:#02569B,color:#fff
+    style FirebaseAuth fill:#FFCA28,color:#333
+    style DockerHub fill:#0db7ed,color:#fff
+    style Gateway fill:#E34F26,color:#fff
+    style SpringBoot fill:#6DB33F,color:#fff
+    style Postgres fill:#336791,color:#fff
+    style BaaS_Supabase color:#333
+```
+
+
+### 🔒 Segurança e Fluxo de Validação
+O backend adota uma postura **Zero Trust**:
+
+1.  **Roteamento:** O serviço não é exposto diretamente à internet pública. Ele recebe tráfego roteado e higienizado pelo **API Gateway (Zuplo)**.
+2.  **Validação de Identidade:**
+    * Ao receber uma requisição, o Spring Boot intercepta o header `Authorization`.
+    * Ele consulta as chaves públicas (JWKS) do **Firebase Auth** para validar a assinatura digital e a validade do Token JWT.
+    * Requisições sem token ou com token inválido são rejeitadas com `401 Unauthorized` antes de processar qualquer regra de negócio.
+
+### 🚀 Pipeline de CI/CD e Deploy
+A aplicação segue os princípios do **The Twelve-Factor App**:
+
+* **Build:** O código é empacotado via Docker e a imagem é enviada para o **Docker Hub**.
+* **Deploy:** O **Render.com** detecta a atualização da imagem e realiza o deploy automático (Zero-downtime deployment).
+* **Configuração:** Credenciais de banco e chaves de API são injetadas via Variáveis de Ambiente no container.
+
+### 💾 Persistência de Dados
+* **Banco de Dados:** PostgreSQL (Hospedado na **Supabase**).
+* **Conexão:** Via JDBC/HikariCP pool.
+
+
+## 📋 Pré-requisitos
+
+Antes de botar pra rodar, garante que você tem o material de jogo:
+
+1.  **Java 17+ (JDK)**: Se não tiver, a bola nem rola.
+2.  **Maven**: Já vem com o nosso wrapper (`mvnw`), então é só usar.
+3.  **Docker e Docker Compose**: Para subir o banco de dados PostgreSQL localmente.
+4.  **Conta no Firebase**: Você vai precisar de uma conta no Firebase para gerar o arquivo `serviceAccountKey.json`.
+
+## ⚙️ Configuração do Ambiente Local e Credenciais
+
+Para garantir a segurança e facilitar o desenvolvimento, as credenciais e chaves sensíveis são gerenciadas via variáveis de ambiente e arquivos `.gitignore`.
+
+### 1. Banco de Dados PostgreSQL (Docker)
+
+A fonte verdade do esquema do banco de dados está no arquivo `banco-postgres/dump-bank123-v15.sql`. Para subir o banco de dados com a configuração correta:
+
+1.  **Navegue até a pasta `banco-postgres`** no terminal:
+    ```bash
+    cd banco-postgres
+    ```
+2.  **Derrube o container existente e apague os volumes de dados (se houver):**
+    ```bash
+    docker-compose down --volumes
+    ```
+3.  **Recrie e inicie o container do banco de dados em segundo plano:**
+    ```bash
+    docker-compose up -d --build
+    ```
+    Isso criará o container `bank123-postgres` e importará o esquema e os dados iniciais.
+4.  **Volte para a raiz do projeto:**
+    ```bash
+    cd ..
+    ```
+
+### 2. Credenciais do Banco de Dados (application.properties)
+
+O arquivo `src/main/resources/application.properties` foi configurado para ler o usuário e a senha do banco de dados de variáveis de ambiente:
+
+```properties
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+```
+
+*   **Para execução via Maven (`./mvnw spring-boot:run`):**
+    Defina as variáveis de ambiente antes de executar o comando:
+    ```bash
+    export DB_USERNAME=bank123
+    export DB_PASSWORD=senhabank123
+    ./mvnw spring-boot:run
+    ```
+
+*   **Para execução via VS Code (`launch.json`):**
+    O arquivo `.vscode/launch.json` já está configurado para injetar essas variáveis de ambiente automaticamente para o perfil de debug.
+
+### 3. Senha do PostgreSQL para Docker Compose
+
+O `docker-compose.yml` agora lê a senha do PostgreSQL de um arquivo `.env`:
+
+*   **Crie um arquivo chamado `.env`** na raiz do projeto com o seguinte conteúdo:
+    ```
+    POSTGRES_PASSWORD=senhabank123
+    ```
+*   Este arquivo `.env` foi adicionado ao `.gitignore` e **não deve ser versionado**.
+
+### 4. Chave da Conta de Serviço do Firebase (`serviceAccountKey.json`)
+
+*   O arquivo `serviceAccountKey.json` (baixado do seu projeto Firebase) deve ser colocado na pasta `src/main/resources/`.
+*   Este arquivo também foi adicionado ao `.gitignore` e **não deve ser versionado** devido à sua natureza sensível. Obtenha-o de forma segura e não o inclua no controle de versão.
+
+### 5. Logs Centralizados com Loki
+
+Para o envio de logs centralizados para o Loki, o `logback-spring.xml` foi configurado para utilizar variáveis de ambiente para as credenciais de autenticação. Isso garante que as informações sensíveis não sejam expostas no código-fonte.
+
+*   **Configuração:**
+    As credenciais para o Loki (usuário e senha) são lidas das seguintes variáveis de ambiente:
+    ```
+    LOKI_USERNAME
+    LOKI_PASSWORD
+    ```
+
+*   **Para execução via Maven (`./mvnw spring-boot:run`):**
+    Defina as variáveis de ambiente antes de executar o comando:
+    ```bash
+    export LOKI_USERNAME=seu_usuario_loki
+    export LOKI_PASSWORD=sua_senha_loki
+    ./mvnw spring-boot:run
+    ```
+
+*   **Para execução via VS Code (`launch.json`):**
+    Adicione as variáveis de ambiente ao seu arquivo `.vscode/launch.json`:
+    ```json
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                // ... outras configurações ...
+                "env": {
+                    "DB_USERNAME": "bank123",
+                    "DB_PASSWORD": "senhabank123",
+                    "LOKI_USERNAME": "seu_usuario_loki",
+                    "LOKI_PASSWORD": "sua_senha_loki"
+                },
+                // ... restante da configuração ...
+            }
+        ]
+    }
+    ```
+    Lembre-se de substituir `seu_usuario_loki` e `sua_senha_loki` pelos valores reais das suas credenciais do Loki.
+
+## ▶️ Como Executar (Apito Inicial)
+
+### Via Maven Wrapper:
+
+```bash
+# Lembre-se de definir DB_USERNAME e DB_PASSWORD se não estiver usando o VS Code
+export DB_USERNAME=bank123
+export DB_PASSWORD=senhabank123
+./mvnw spring-boot:run
+```
+
+### Via VS Code (Debug):
+
+Para depurar a aplicação diretamente no VS Code, você precisará configurar o arquivo `.vscode/launch.json`. Este arquivo informa ao VS Code como iniciar e anexar o depurador à sua aplicação Java.
+
+Se o arquivo não existir, siga os passos:
+
+1.  Crie uma pasta `.vscode` na raiz do projeto.
+2.  Dentro dela, crie um arquivo `launch.json`.
+3.  Copie e cole o seguinte conteúdo no arquivo:
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Bff-bank Local",
+            "request": "launch",
+            "mainClass": "br.com.fabioalvaro.bank123.bffbank.BffbankApplication",
+            "projectName": "bffbank",
+            "args": "",
+            "env": {
+                "DB_USERNAME": "bank123",
+                "DB_PASSWORD": "senhabank123"
+            },
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
+```
+
+#### O que essa configuração faz?
+
+-   **`"type": "java"`**: Informa que estamos depurando uma aplicação Java.
+-   **`"name": "Bff-bank Local"`**: Nome amigável para esta configuração, que aparecerá no menu "Run and Debug".
+-   **`"request": "launch"`**: Inicia a aplicação em modo de depuração.
+-   **`"mainClass"`**: Aponta para a classe principal que inicia o Spring Boot.
+-   **`"env"`**: Injeta as credenciais do banco de dados como variáveis de ambiente, para que você não precise exportá-las manualmente no terminal.
+
+Com o arquivo salvo, para iniciar a depuração:
+
+1.  Abra o painel "Run and Debug" (Ctrl+Shift+D ou Cmd+Shift+D).
+2.  Selecione a configuração "Bff-bank Local" no menu.
+3.  Clique no botão de iniciar (seta verde).
+
+Se tudo der certo, o serviço vai subir e ficar esperando a bola chegar na porta `8080`.
+
+## ✅ Como Testar (O Jogo-Treino)
+
+Pra ver se a zaga tá firme e o ataque tá afiado, rode nossa bateria de testes:
+
+```bash
+./mvnw test
+```
+
+## Ajustar chave ##
+cat serviceAccountKey.json | base64
+
+$ mvn spring-boot:run -Dspring-boot.run.profiles=local -Dspring-boot.run.arguments="--server.port=8080" -Dmaven.test.skip=true
+
+## 📖 API
+
+A documentação oficial do BFF, no padrão OpenAPI 3.0, pode ser acessada em tempo real no endereço:
+**`http://localhost:8080/v3/api-docs`**
+
+Você pode visualizar e testar os endpoints através da interface amigável do Swagger UI:
+**`http://localhost:8080/swagger-ui/index.html`**
+
+Você também pode obter a definição completa da API no formato JSON através do arquivo `bff-bank123-openapi.json`, que é gerado quando a aplicação está rodando.
+
+## 📝 Requisitos Funcionais Implementados
+
+-   **Log de Webhook do Firebase:** Implementado log detalhado no console para o endpoint `/onboarding/v1/webhook-firebase-add`. Agora são registrados o REQUEST (Headers e Body) e o RESPONSE (Status Code, Headers e Body) para rastreabilidade completa. (20/12/2025)
+-   **Criação Automática de Conta (Onboarding):** Ao receber o webhook do Firebase em `/onboarding/v1/webhook-firebase-add`, o sistema agora cria automaticamente um registro na tabela `contas` com os dados do usuário (email, uid do Firebase), define o status como 'ativa', saldo zero e gera um novo número de conta sequencial. Além disso, atribui automaticamente as *Custom Claims* dentro do namespace `bank123/jwt/claims` contendo: `numeroconta`, `default_role` (cliente_pf), `allowed_roles` (['cliente_pf']) e `scope` (read:saldo read:extrato write:transacoes read:perfil). (20/12/2025)
+-   **Busca de Perfil por E-mail:** O endpoint de perfil (`/bff-bank123/usuario/v1/perfil`) foi alterado para buscar o usuário através do header `x-email-firebase`, permitindo a recuperação dos dados da conta e do perfil (se houver) usando o e-mail como identificador principal. (20/12/2025)
+
+
+
+================================================
+FILE: bff-bank123-openapi.json
+================================================
+{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:8080","description":"Generated server url"}],"paths":{"/onboarding/v1/webhook-firebase-add":{"post":{"tags":["onboarding-controller"],"operationId":"receberWebhook","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/WebhookFirebasePayload"}}},"required":true},"responses":{"200":{"description":"Webhook recebido com sucesso.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/WebhookFirebasePayload"}}}}},"400":{"description":"Dados inválidos."}}}},"/bff-bank123/usuario/v1/perfil":{"get":{"tags":["usuario-controller"],"operationId":"obterPerfil","parameters":[{"name":"x-email-firebase","in":"header","required":true,"schema":{"type":"string"},"description":"E-mail do usuário no Firebase"},{"name":"x-correlation-id","in":"header","required":false,"schema":{"type":"string","default":"uuid-fake"},"description":"ID de correlação para rastreamento de requisições"},{"name":"Authorization","in":"header","required":false,"schema":{"type":"string"},"description":"Token de autorização JWT"}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/PerfilResponse"}}}}}}},"/bff-bank123/extrato/v1/saldo":{"get":{"tags":["extrato-controller"],"operationId":"consultarSaldo","parameters":[{"name":"Authorization","in":"header","required":false,"schema":{"type":"string"}},{"name":"x-account-id","in":"header","required":true,"schema":{"type":"integer","format":"int32"}},{"name":"x-correlation-id","in":"header","required":false,"schema":{"type":"string","default":"uuid-fake"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/SaldoResponse"}}}}}}},"/bff-bank123/extrato/v1/listagem":{"get":{"tags":["extrato-controller"],"operationId":"listarExtrato","parameters":[{"name":"Authorization","in":"header","required":false,"schema":{"type":"string"}},{"name":"x-account-id","in":"header","required":true,"schema":{"type":"integer","format":"int32"}},{"name":"x-correlation-id","in":"header","required":false,"schema":{"type":"string","default":"uuid-fake"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/TransacaoResponse"}}}}}}}},"/comandos/v1/funcao-mudar-claim/{numeroconta}":{"post":{"tags":["comandos-controller"],"operationId":"adicionarClaimsAoUsuario","parameters":[{"name":"numeroconta","in":"path","required":true,"schema":{"type":"integer","format":"int32"},"description":"Número da conta para atualizar as claims"}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/MudarClaimRequest"}}},"required":true},"responses":{"200":{"description":"Claims atualizadas com sucesso.","content":{"*/*":{"schema":{"type":"string"}}}},"404":{"description":"Conta não encontrada."},"500":{"description":"Erro interno ao processar claims."}}}}},"/bff-bank123/investimentos/v1/carteira":{"get":{"tags":["investimentos-controller"],"operationId":"consultarCarteira","parameters":[{"name":"Authorization","in":"header","required":false,"schema":{"type":"string"}},{"name":"x-account-id","in":"header","required":true,"schema":{"type":"integer","format":"int32"}},{"name":"x-correlation-id","in":"header","required":false,"schema":{"type":"string","default":"uuid-fake"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarteiraResponse"}}}}}}},"/bff-bank123/movimentacoes/v1/transferencia-conta":{"post":{"tags":["movimentacoes-controller"],"operationId":"transferenciaConta","parameters":[{"name":"Authorization","in":"header","required":false,"schema":{"type":"string"}},{"name":"x-account-id","in":"header","required":true,"schema":{"type":"integer","format":"int32"}},{"name":"x-correlation-id","in":"header","required":false,"schema":{"type":"string","default":"uuid-fake"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/TransferenciaContaRequest"}}},"required":true},"responses":{"201":{"description":"Transferência criada com sucesso","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TransferenciaContaResponse"}}}}}}}},"components":{"schemas":{"MudarClaimRequest":{"type":"object","properties":{"uid":{"type":"string"}}},"WebhookFirebasePayload":{"type":"object","properties":{"uid":{"type":"string"},"email":{"type":"string"},"displayName":{"type":"string"},"createdAt":{"type":"string"},"provider":{"type":"string"}}},"PerfilResponse":{"type":"object","properties":{"nomeCompleto":{"type":"string"},"endereco":{"type":"string"},"agencia":{"type":"string"},"numeroConta":{"type":"integer","format":"int32"},"idUserFirebase":{"type":"string"},"status":{"type":"string"}}},"SaldoResponse":{"type":"object","properties":{"numeroConta":{"type":"integer","format":"int32"},"saldo":{"type":"number"}}},"TransacaoResponse":{"type":"object","properties":{"idTransacao":{"type":"integer","format":"int32"},"dataTransacao":{"type":"string","format":"date-time"},"valorTransacao":{"type":"number"},"operacao":{"type":"string"},"destino":{"type":"string"},"origem":{"type":"string"}}},"CarteiraResponse":{"type":"object","properties":{"carteira":{"type":"array","items":{"$ref":"#/components/schemas/InvestimentoItemResponse"}},"resumo":{"$ref":"#/components/schemas/CarteiraResumoResponse"}}},"CarteiraResumoResponse":{"type":"object","properties":{"totalInvestido":{"type":"number"},"quantidadeAtivos":{"type":"integer","format":"int32"}}},"InvestimentoItemResponse":{"type":"object","properties":{"ticker":{"type":"string"},"nomeEmpresa":{"type":"string"},"tipo":{"type":"string"},"instituicao":{"type":"string"},"quantidade":{"type":"integer","format":"int32"},"precoFechamento":{"type":"number"},"valorTotal":{"type":"number"}}},"TransferenciaContaRequest":{"type":"object","properties":{"valor":{"type":"string"},"destino-conta":{"type":"string"}}},"TransferenciaContaResponse":{"type":"object","properties":{"valor":{"type":"string"},"transacao-id":{"type":"string"}}}}}}
+
+
+================================================
+FILE: GEMINI.md
+================================================
+# Diretrizes para Interação com o Gemini
+
+Este documento fornece diretrizes para o assistente de IA Gemini, garantindo consistência e aderência aos padrões do projeto BFF Bank123.
+
+## 1. Visão Geral do Projeto
+
+O projeto é um **BFF (Backend for Frontend)** para uma aplicação bancária, desenvolvido em **Java com Spring Boot**. Ele serve como uma camada intermediária entre o frontend e o Banco Postgres, expondo APIs REST para funcionalidades como consulta de saldo, extrato e dados de perfil de usuário.
+
+## 2. Pilha Tecnológica Principal
+
+-   **Linguagem:** Java 17+
+-   **Framework:** Spring Boot
+-   **Build:** Apache Maven (utilize sempre o wrapper `mvnw`)
+-   **Banco de Dados:** PostgreSQL (via Spring Data JPA)
+-   **Segurança:** Firebase Auth para autenticação de token JWT.
+-   **Documentação da API:** OpenAPI 3.0 (gerada automaticamente via Springdoc)
+
+## 3. Padrões e Convenções de Código
+
+-   **Arquitetura:** Siga estritamente a arquitetura em camadas existente:
+    -   `controller`: Apenas para receber requisições, validar entradas e chamar o serviço correspondente.
+    -   `service`: Contém toda a lógica de negócio.
+    -   `repository`: Interface para acesso a dados via Spring Data JPA.
+    -   `model`: Entidades JPA que mapeiam as tabelas do banco de dados.
+    -   `dto`: Objetos de Transferência de Dados para as respostas da API.
+-   **Estilo de Código:** Mantenha o estilo do código existente. Use as anotações do **Lombok** (`@Data`, `@AllArgsConstructor`, etc.) para evitar código boilerplate.
+-   **Imutabilidade:** Quando apropriado, prefira objetos imutáveis, especialmente em DTOs e respostas de serviço.
+-   **Tratamento de Erros:** Siga os padrões de tratamento de exceção do Spring Boot.
+- Nunca faca stage e commit sem me perguntar se deve ou nao fazer. o Padrao é nunca fazer.
+
+## 4. Ferramentas e Comandos
+
+-   **Executar a aplicação:**
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+-   **Executar os testes:**
+    ```bash
+    ./mvnw test
+    ```
+-   **Instalar dependências:**
+    ```bash
+    ./mvnw install
+    ```
+
+## 5. API e Documentação
+
+-   **Fonte da Verdade:** A documentação da API é gerada automaticamente pelo Springdoc a partir das anotações nos controllers (`@Operation`, `@ApiResponses`, etc.).
+-   **Modificações:** Ao adicionar ou modificar um endpoint, **sempre** atualize as anotações do OpenAPI diretamente no código Java do controller correspondente.
+-   **Visualização:** Os endpoints da API podem ser visualizados e testados através do Swagger UI em: `http://localhost:8080/swagger-ui/index.html#`
+
+## 6. Commits e Controle de Versão
+
+-   **Mensagens de Commit:** Use o padrão *Conventional Commits*.
+    -   Exemplos: `feat: Adiciona endpoint de perfil de usuário`, `fix: Corrige cálculo de saldo`, `docs: Atualiza documentação do endpoint de extrato`.
+-   **Branching:** Siga um modelo como o GitFlow (`feature/`, `bugfix/`, `release/`).
+
+## 7. Preferencias
+- Sempre me chame de Fabão.
+- Uso macbook para codificar e uso o vscode como IDE.
+
+A fonte verdade do banco esta em: banco-postgres/dump-bank123-v15.sql (atualizado em sábado, 13 de dezembro de 2025)
+
+## Gemini Added Memories
+- o arquivo @bff-bank123-openapi.json deve ser atualizado toda a vez que a API rest for modificada.
+- Todos os enpoints devem ser protegidos com o token do firebase e o padrao para as consultas devem ser pelo numero da conta. Exceto os endpoints do swagger e healthcheck. 
+x-account-id
+x-correlationId
+Authorization
+
+
+
+================================================
+FILE: HELP.md
+================================================
+# Getting Started
+
+### Reference Documentation
+For further reference, please consider the following sections:
+
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.5.8/maven-plugin)
+* [Create an OCI image](https://docs.spring.io/spring-boot/3.5.8/maven-plugin/build-image.html)
+* [Spring Web](https://docs.spring.io/spring-boot/3.5.8/reference/web/servlet.html)
+
+### Guides
+The following guides illustrate how to use some features concretely:
+
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+
+### Maven Parent overrides
+
+Due to Maven's design, elements are inherited from the parent POM to the project POM.
+While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the parent.
+To prevent this, the project POM contains empty overrides for these elements.
+If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
+
+
+
+
+================================================
+FILE: mvnw
+================================================
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# Maven Start Up Batch script
+#
+# Required ENV vars:
+# ------------------
+#   JAVA_HOME - location of a JDK home dir
+#
+# Optional ENV vars
+# -----------------
+#   M2_HOME - location of maven2's installed home dir
+#   MAVEN_OPTS - parameters passed to the Java VM when running Maven
+#     e.g. to debug Maven itself, use
+#       set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+#   MAVEN_SKIP_RC - flag to disable loading of mavenrc files
+# ----------------------------------------------------------------------------
+
+if [ -z "$MAVEN_SKIP_RC" ] ; then
+
+  if [ -f /etc/mavenrc ] ; then
+    . /etc/mavenrc
+  fi
+
+  if [ -f "$HOME/.mavenrc" ] ; then
+    . "$HOME/.mavenrc"
+  fi
+
+fi
+
+# OS specific support.  $var _must_ be set to either true or false.
+cygwin=false;
+darwin=false;
+mingw=false
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  MINGW*) mingw=true;;
+  Darwin*) darwin=true
+    # Use /usr/libexec/java_home if available, otherwise fall back to /Library/Java/Home
+    # See https://developer.apple.com/library/mac/qa/qa1170/_index.html
+    if [ -z "$JAVA_HOME" ]; then
+      if [ -x "/usr/libexec/java_home" ]; then
+        export JAVA_HOME="`/usr/libexec/java_home`"
+      else
+        export JAVA_HOME="/Library/Java/Home"
+      fi
+    fi
+    ;;
+esac
+
+if [ -z "$JAVA_HOME" ] ; then
+  if [ -r /etc/gentoo-release ] ; then
+    JAVA_HOME=`java-config --jre-home`
+  fi
+fi
+
+if [ -z "$M2_HOME" ] ; then
+  ## resolve links - $0 may be a link to maven's home
+  PRG="$0"
+
+  # need this for relative symlinks
+  while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+      PRG="$link"
+    else
+      PRG="`dirname "$PRG"`/$link"
+    fi
+  done
+
+  saveddir=`pwd`
+
+  M2_HOME=`dirname "$PRG"`/..
+
+  # make it fully qualified
+  M2_HOME=`cd "$M2_HOME" && pwd`
+
+  cd "$saveddir"
+  # echo Using m2 at $M2_HOME
+fi
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$M2_HOME" ] &&
+    M2_HOME=`cygpath --unix "$M2_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+fi
+
+# For Mingw, ensure paths are in UNIX format before anything is touched
+if $mingw ; then
+  [ -n "$M2_HOME" ] &&
+    M2_HOME="`(cd "$M2_HOME"; pwd)`"
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME="`(cd "$JAVA_HOME"; pwd)`"
+fi
+
+if [ -z "$JAVA_HOME" ]; then
+  javaExecutable="`which javac`"
+  if [ -n "$javaExecutable" ] && ! [ "`expr \"$javaExecutable\" : '\([^ ]*\)'`" = "no" ]; then
+    # readlink(1) is not available as standard on Solaris 10.
+    readLink=`which readlink`
+    if [ ! `expr "$readLink" : '\([^ ]*\)'` = "no" ]; then
+      if $darwin ; then
+        javaHome="`dirname \"$javaExecutable\"`"
+        javaExecutable="`cd \"$javaHome\" && pwd -P`/javac"
+      else
+        javaExecutable="`readlink -f \"$javaExecutable\"`"
+      fi
+      javaHome="`dirname \"$javaExecutable\"`"
+      javaHome=`expr "$javaHome" : '\(.*\)/bin'`
+      JAVA_HOME="$javaHome"
+      export JAVA_HOME
+    fi
+  fi
+fi
+
+if [ -z "$JAVACMD" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+      # IBM's JDK on AIX uses strange locations for the executables
+      JAVACMD="$JAVA_HOME/jre/sh/java"
+    else
+      JAVACMD="$JAVA_HOME/bin/java"
+    fi
+  else
+    JAVACMD="`which java`"
+  fi
+fi
+
+if [ ! -x "$JAVACMD" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly." >&2
+  echo "  We cannot execute $JAVACMD" >&2
+  exit 1
+fi
+
+if [ -z "$JAVA_HOME" ] ; then
+  echo "Warning: JAVA_HOME environment variable is not set."
+fi
+
+CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher
+
+# traverses directory structure from process work directory to filesystem root
+# first directory with .mvn subdirectory is considered project base directory
+find_maven_basedir() {
+
+  if [ -z "$1" ]
+  then
+    echo "Path not specified to find_maven_basedir"
+    return 1
+  fi
+
+  basedir="$1"
+  wdir="$1"
+  while [ "$wdir" != '/' ] ; do
+    if [ -d "$wdir"/.mvn ] ; then
+      basedir=$wdir
+      break
+    fi
+    # workaround for JBEAP-8937 (on Solaris 10/Sparc)
+    if [ -d "${wdir}" ]; then
+      wdir=`cd "$wdir/.."; pwd`
+    fi
+    # end of workaround
+  done
+  echo "${basedir}"
+}
+
+# concatenates all lines of a file
+concat_lines() {
+  if [ -f "$1" ]; then
+    echo "$(tr -s '\n' ' ' < "$1")"
+  fi
+}
+
+BASE_DIR=`find_maven_basedir "$(pwd)"`
+if [ -z "$BASE_DIR" ]; then
+  exit 1;
+fi
+
+##########################################################################################
+# Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
+# This allows using the maven wrapper in projects that prohibit checking in binary data.
+##########################################################################################
+if [ -r "$BASE_DIR/.mvn/wrapper/maven-wrapper.jar" ]; then
+    if [ "$MVNW_VERBOSE" = true ]; then
+      echo "Found .mvn/wrapper/maven-wrapper.jar"
+    fi
+else
+    if [ "$MVNW_VERBOSE" = true ]; then
+      echo "Couldn't find .mvn/wrapper/maven-wrapper.jar, downloading it ..."
+    fi
+    if [ -n "$MVNW_REPOURL" ]; then
+      jarUrl="$MVNW_REPOURL/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar"
+    else
+      jarUrl="https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar"
+    fi
+    while IFS="=" read key value; do
+      case "$key" in (wrapperUrl) jarUrl="$value"; break ;;
+      esac
+    done < "$BASE_DIR/.mvn/wrapper/maven-wrapper.properties"
+    if [ "$MVNW_VERBOSE" = true ]; then
+      echo "Downloading from: $jarUrl"
+    fi
+    wrapperJarPath="$BASE_DIR/.mvn/wrapper/maven-wrapper.jar"
+    if $cygwin; then
+      wrapperJarPath=`cygpath --path --windows "$wrapperJarPath"`
+    fi
+
+    if command -v wget > /dev/null; then
+        if [ "$MVNW_VERBOSE" = true ]; then
+          echo "Found wget ... using wget"
+        fi
+        if [ -z "$MVNW_USERNAME" ] || [ -z "$MVNW_PASSWORD" ]; then
+            wget "$jarUrl" -O "$wrapperJarPath"
+        else
+            wget --http-user=$MVNW_USERNAME --http-password=$MVNW_PASSWORD "$jarUrl" -O "$wrapperJarPath"
+        fi
+    elif command -v curl > /dev/null; then
+        if [ "$MVNW_VERBOSE" = true ]; then
+          echo "Found curl ... using curl"
+        fi
+        if [ -z "$MVNW_USERNAME" ] || [ -z "$MVNW_PASSWORD" ]; then
+            curl -o "$wrapperJarPath" "$jarUrl" -f
+        else
+            curl --user $MVNW_USERNAME:$MVNW_PASSWORD -o "$wrapperJarPath" "$jarUrl" -f
+        fi
+
+    else
+        if [ "$MVNW_VERBOSE" = true ]; then
+          echo "Falling back to using Java to download"
+        fi
+        javaClass="$BASE_DIR/.mvn/wrapper/MavenWrapperDownloader.java"
+        # For Cygwin, switch paths to Windows format before running javac
+        if $cygwin; then
+          javaClass=`cygpath --path --windows "$javaClass"`
+        fi
+        if [ -e "$javaClass" ]; then
+            if [ ! -e "$BASE_DIR/.mvn/wrapper/MavenWrapperDownloader.class" ]; then
+                if [ "$MVNW_VERBOSE" = true ]; then
+                  echo " - Compiling MavenWrapperDownloader.java ..."
+                fi
+                # Compiling the Java class
+                ("$JAVA_HOME/bin/javac" "$javaClass")
+            fi
+            if [ -e "$BASE_DIR/.mvn/wrapper/MavenWrapperDownloader.class" ]; then
+                # Running the downloader
+                if [ "$MVNW_VERBOSE" = true ]; then
+                  echo " - Running MavenWrapperDownloader.java ..."
+                fi
+                ("$JAVA_HOME/bin/java" -cp .mvn/wrapper MavenWrapperDownloader "$MAVEN_PROJECTBASEDIR")
+            fi
+        fi
+    fi
+fi
+##########################################################################################
+# End of extension
+##########################################################################################
+
+export MAVEN_PROJECTBASEDIR=${MAVEN_BASEDIR:-"$BASE_DIR"}
+if [ "$MVNW_VERBOSE" = true ]; then
+  echo $MAVEN_PROJECTBASEDIR
+fi
+MAVEN_OPTS="$(concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config") $MAVEN_OPTS"
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  [ -n "$M2_HOME" ] &&
+    M2_HOME=`cygpath --path --windows "$M2_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+  [ -n "$MAVEN_PROJECTBASEDIR" ] &&
+    MAVEN_PROJECTBASEDIR=`cygpath --path --windows "$MAVEN_PROJECTBASEDIR"`
+fi
+
+# Provide a "standardized" way to retrieve the CLI args that will
+# work with both Windows and non-Windows executions.
+MAVEN_CMD_LINE_ARGS="$MAVEN_CONFIG $@"
+export MAVEN_CMD_LINE_ARGS
+
+WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
+
+exec "$JAVACMD" \
+  $MAVEN_OPTS \
+  -classpath "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar" \
+  "-Dmaven.home=${M2_HOME}" "-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}" \
+  ${WRAPPER_LAUNCHER} $MAVEN_CONFIG "$@"
+
+
+
+================================================
+FILE: mvnw.cmd
+================================================
+@REM ----------------------------------------------------------------------------
+@REM Licensed to the Apache Software Foundation (ASF) under one
+@REM or more contributor license agreements.  See the NOTICE file
+@REM distributed with this work for additional information
+@REM regarding copyright ownership.  The ASF licenses this file
+@REM to you under the Apache License, Version 2.0 (the
+@REM "License"); you may not use this file except in compliance
+@REM with the License.  You may obtain a copy of the License at
+@REM
+@REM    http://www.apache.org/licenses/LICENSE-2.0
+@REM
+@REM Unless required by applicable law or agreed to in writing,
+@REM software distributed under the License is distributed on an
+@REM "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+@REM KIND, either express or implied.  See the License for the
+@REM specific language governing permissions and limitations
+@REM under the License.
+@REM ----------------------------------------------------------------------------
+
+@REM ----------------------------------------------------------------------------
+@REM Maven Start Up Batch script
+@REM
+@REM Required ENV vars:
+@REM JAVA_HOME - location of a JDK home dir
+@REM
+@REM Optional ENV vars
+@REM M2_HOME - location of maven2's installed home dir
+@REM MAVEN_BATCH_ECHO - set to 'on' to enable the echoing of the batch commands
+@REM MAVEN_BATCH_PAUSE - set to 'on' to wait for a keystroke before ending
+@REM MAVEN_OPTS - parameters passed to the Java VM when running Maven
+@REM     e.g. to debug Maven itself, use
+@REM set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+@REM MAVEN_SKIP_RC - flag to disable loading of mavenrc files
+@REM ----------------------------------------------------------------------------
+
+@REM Begin all REM lines with '@' in case MAVEN_BATCH_ECHO is 'on'
+@echo off
+@REM set title of command window
+title %0
+@REM enable echoing by setting MAVEN_BATCH_ECHO to 'on'
+@if "%MAVEN_BATCH_ECHO%" == "on"  echo %MAVEN_BATCH_ECHO%
+
+@REM set %HOME% to equivalent of $HOME
+if "%HOME%" == "" (set "HOME=%HOMEDRIVE%%HOMEPATH%")
+
+@REM Execute a user defined script before this one
+if not "%MAVEN_SKIP_RC%" == "" goto skipRcPre
+@REM check for pre script, once with legacy .bat ending and once with .cmd ending
+if exist "%HOME%\mavenrc_pre.bat" call "%HOME%\mavenrc_pre.bat"
+if exist "%HOME%\mavenrc_pre.cmd" call "%HOME%\mavenrc_pre.cmd"
+:skipRcPre
+
+@setlocal
+
+set ERROR_CODE=0
+
+@REM To isolate internal variables from possible post scripts, we use another setlocal
+@setlocal
+
+@REM ==== START VALIDATION ====
+if not "%JAVA_HOME%" == "" goto OkJHome
+
+echo.
+echo Error: JAVA_HOME not found in your environment. >&2
+echo Please set the JAVA_HOME variable in your environment to match the >&2
+echo location of your Java installation. >&2
+echo.
+goto error
+
+:OkJHome
+if exist "%JAVA_HOME%\bin\java.exe" goto init
+
+echo.
+echo Error: JAVA_HOME is set to an invalid directory. >&2
+echo JAVA_HOME = "%JAVA_HOME%" >&2
+echo Please set the JAVA_HOME variable in your environment to match the >&2
+echo location of your Java installation. >&2
+echo.
+goto error
+
+@REM ==== END VALIDATION ====
+
+:init
+
+@REM Find the project base dir, i.e. the directory that contains the folder ".mvn".
+@REM Fallback to current working directory if not found.
+
+set MAVEN_PROJECTBASEDIR=%MAVEN_BASEDIR%
+IF NOT "%MAVEN_PROJECTBASEDIR%"=="" goto endDetectBaseDir
+
+set EXEC_DIR=%CD%
+set WDIR=%EXEC_DIR%
+:findBaseDir
+IF EXIST "%WDIR%"\.mvn goto baseDirFound
+cd ..
+IF "%WDIR%"=="%CD%" goto baseDirNotFound
+set WDIR=%CD%
+goto findBaseDir
+
+:baseDirFound
+set MAVEN_PROJECTBASEDIR=%WDIR%
+cd "%EXEC_DIR%"
+goto endDetectBaseDir
+
+:baseDirNotFound
+set MAVEN_PROJECTBASEDIR=%EXEC_DIR%
+cd "%EXEC_DIR%"
+
+:endDetectBaseDir
+
+IF NOT EXIST "%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config" goto endReadAdditionalConfig
+
+@setlocal EnableExtensions EnableDelayedExpansion
+for /F "usebackq delims=" %%a in ("%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config") do set JVM_CONFIG_MAVEN_PROPS=!JVM_CONFIG_MAVEN_PROPS! %%a
+@endlocal & set JVM_CONFIG_MAVEN_PROPS=%JVM_CONFIG_MAVEN_PROPS%
+
+:endReadAdditionalConfig
+
+SET MAVEN_JAVA_EXE="%JAVA_HOME%\bin\java.exe"
+set WRAPPER_JAR="%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.jar"
+set WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
+
+set DOWNLOAD_URL="https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar"
+
+FOR /F "tokens=1,2 delims==" %%A IN ("%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.properties") DO (
+    IF "%%A"=="wrapperUrl" SET DOWNLOAD_URL=%%B
+)
+
+@REM Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
+@REM This allows using the maven wrapper in projects that prohibit checking in binary data.
+if exist %WRAPPER_JAR% (
+    if "%MVNW_VERBOSE%" == "true" (
+        echo Found %WRAPPER_JAR%
+    )
+) else (
+    if not "%MVNW_REPOURL%" == "" (
+        SET DOWNLOAD_URL="%MVNW_REPOURL%/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar"
+    )
+    if "%MVNW_VERBOSE%" == "true" (
+        echo Couldn't find %WRAPPER_JAR%, downloading it ...
+        echo Downloading from: %DOWNLOAD_URL%
+    )
+
+    powershell -Command "&{"^
+		"$webclient = new-object System.Net.WebClient;"^
+		"if (-not ([string]::IsNullOrEmpty('%MVNW_USERNAME%') -and [string]::IsNullOrEmpty('%MVNW_PASSWORD%'))) {"^
+		"$webclient.Credentials = new-object System.Net.NetworkCredential('%MVNW_USERNAME%', '%MVNW_PASSWORD%');"^
+		"}"^
+		"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $webclient.DownloadFile('%DOWNLOAD_URL%', '%WRAPPER_JAR%')"^
+		"}"
+    if "%MVNW_VERBOSE%" == "true" (
+        echo Finished downloading %WRAPPER_JAR%
+    )
+)
+@REM End of extension
+
+@REM Provide a "standardized" way to retrieve the CLI args that will
+@REM work with both Windows and non-Windows executions.
+set MAVEN_CMD_LINE_ARGS=%*
+
+%MAVEN_JAVA_EXE% %JVM_CONFIG_MAVEN_PROPS% %MAVEN_OPTS% %MAVEN_DEBUG_OPTS% -classpath %WRAPPER_JAR% "-Dmaven.multiModuleProjectDirectory=%MAVEN_PROJECTBASEDIR%" %WRAPPER_LAUNCHER% %MAVEN_CONFIG% %*
+if ERRORLEVEL 1 goto error
+goto end
+
+:error
+set ERROR_CODE=1
+
+:end
+@endlocal & set ERROR_CODE=%ERROR_CODE%
+
+if not "%MAVEN_SKIP_RC%" == "" goto skipRcPost
+@REM check for post script, once with legacy .bat ending and once with .cmd ending
+if exist "%HOME%\mavenrc_post.bat" call "%HOME%\mavenrc_post.bat"
+if exist "%HOME%\mavenrc_post.cmd" call "%HOME%\mavenrc_post.cmd"
+:skipRcPost
+
+@REM pause the script if MAVEN_BATCH_PAUSE is set to 'on'
+if "%MAVEN_BATCH_PAUSE%" == "on" pause
+
+if "%MAVEN_TERMINATE_CMD%" == "on" exit %ERROR_CODE%
+
+exit /B %ERROR_CODE%
+
+
+
+================================================
+FILE: pom.xml
+================================================
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.8</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>br.com.fabioalvaro.bank123</groupId>
+	<artifactId>bffbank</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>bffbank</name>
+	<description>Demo project for Spring Boot</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.google.firebase</groupId>
+        <artifactId>firebase-admin</artifactId>
+        <version>9.2.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.2.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.github.loki4j</groupId>
+        <artifactId>loki-logback-appender</artifactId>
+        <version>1.5.1</version>
+    </dependency>
+
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
+
+
+================================================
+FILE: run_local.sh
+================================================
+#!/bin/bash
+source .env
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+
+
+
+================================================
+FILE: start_log.txt
+================================================
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< br.com.fabioalvaro.bank123:bffbank >-----------------
+[INFO] Building bffbank 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:3.5.8:run (default-cli) > test-compile @ bffbank >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ bffbank ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.14.1:compile (default-compile) @ bffbank ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:testResources (default-testResources) @ bffbank ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.14.1:testCompile (default-testCompile) @ bffbank ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:3.5.8:run (default-cli) < test-compile @ bffbank <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:3.5.8:run (default-cli) @ bffbank ---
+[INFO] Attaching agents: []
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+10:20:31,574 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeTimestamp] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeMdc] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeContext] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeLoggerName] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [includeMessage] in [com.github.loki4j.logback.JsonLayout]
+10:20:31,576 |-WARN in ch.qos.logback.core.model.processor.ImplicitModelHandler - Ignoring unknown property [flattenMdc] in [com.github.loki4j.logback.JsonLayout]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.8)
+
+10:20:31.837 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] Starting BffbankApplication using Java 17.0.7 with PID 5972 (/Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff/target/classes started by fabioalvaropereira in /Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff)
+10:20:31.840 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] The following 1 profile is active: "local"
+10:20:33.110 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [trace= user=] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+10:20:33.185 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - [trace= user=] Finished Spring Data repository scanning in 62 ms. Found 3 JPA repository interfaces.
+10:20:33.783 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [trace= user=] Tomcat initialized with port 8080 (http)
+10:20:33.798 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [trace= user=] Initializing ProtocolHandler ["http-nio-8080"]
+10:20:33.800 [main] INFO  o.a.catalina.core.StandardService - [trace= user=] Starting service [Tomcat]
+10:20:33.800 [main] INFO  o.a.catalina.core.StandardEngine - [trace= user=] Starting Servlet engine: [Apache Tomcat/10.1.49]
+10:20:33.870 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [trace= user=] Initializing Spring embedded WebApplicationContext
+10:20:33.871 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [trace= user=] Root WebApplicationContext: initialization completed in 1994 ms
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+10:20:34.164 [main] INFO  o.h.jpa.internal.util.LogHelper - [trace= user=] HHH000204: Processing PersistenceUnitInfo [name: default]
+10:20:34.237 [main] INFO  org.hibernate.Version - [trace= user=] HHH000412: Hibernate ORM core version 6.6.36.Final
+10:20:34.272 [main] INFO  o.h.c.i.RegionFactoryInitiator - [trace= user=] HHH000026: Second-level cache disabled
+10:20:34.557 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - [trace= user=] No LoadTimeWeaver setup: ignoring JPA class transformer
+10:20:34.587 [main] INFO  com.zaxxer.hikari.HikariDataSource - [trace= user=] HikariPool-1 - Starting...
+10:20:34.846 [main] INFO  com.zaxxer.hikari.pool.HikariPool - [trace= user=] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3de383f7
+10:20:34.848 [main] INFO  com.zaxxer.hikari.HikariDataSource - [trace= user=] HikariPool-1 - Start completed.
+10:20:34.998 [main] INFO  o.hibernate.orm.connections.pooling - [trace= user=] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+10:20:35.980 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - [trace= user=] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+10:20:36.087 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - [trace= user=] Initialized JPA EntityManagerFactory for persistence unit 'default'
+Carregando credenciais do Firebase via variável de ambiente FIREBASE_KEY_JSON.
+Tamanho recebido: 3184
+Início da string: ewogICJ0eX
+Tentando decodificar Base64...
+Credenciais decodificadas de Base64 com sucesso.
+10:20:36.665 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - [trace= user=] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+10:20:36.986 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - [trace= user=] Exposing 1 endpoint beneath base path '/actuator'
+10:20:37.018 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - [trace= user=] 
+
+Using generated security password: 63f8918a-281e-4eac-870e-989d312b6c43
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+10:20:37.029 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - [trace= user=] Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+10:20:37.177 [main] INFO  o.s.v.b.OptionalValidatorFactoryBean - [trace= user=] Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+10:20:37.539 [main] INFO  o.a.coyote.http11.Http11NioProtocol - [trace= user=] Starting ProtocolHandler ["http-nio-8080"]
+10:20:37.553 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - [trace= user=] Tomcat started on port 8080 (http) with context path '/'
+10:20:37.573 [main] INFO  b.c.f.b.bffbank.BffbankApplication - [trace= user=] Started BffbankApplication in 6.472 seconds (process running for 6.853)
+10:21:24.904 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - [trace= user=] Initializing Spring DispatcherServlet 'dispatcherServlet'
+10:21:24.904 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [trace= user=] Initializing Servlet 'dispatcherServlet'
+10:21:24.906 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - [trace= user=] Completed initialization in 2 ms
+10:21:24.955 [http-nio-8080-exec-1] INFO  b.c.f.b.bffbank.filter.MdcFilter - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Nova request recebida: POST /comandos/v1/funcao-mudar-claim/123456 Headers: [host: localhost:8080 | user-agent: curl/8.7.1 | accept: */* | content-type: application/json | content-length: 39]
+10:21:25.048 [http-nio-8080-exec-1] INFO  b.c.f.b.b.c.ComandosController - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Recebida requisição para atualizar claims da conta: 123456 com UID: HL5dqdMBg5Wa01y073LJTzv87FS2
+10:21:25.049 [http-nio-8080-exec-1] INFO  b.c.f.b.b.service.OnboardingService - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Refazendo claims para a conta: 123456 com UID forçado: HL5dqdMBg5Wa01y073LJTzv87FS2
+10:21:26.258 [http-nio-8080-exec-1] INFO  b.c.f.b.b.service.OnboardingService - [trace=ccd4d1c9-e4ce-406a-84fb-c401e12f2edd user=] Custom claims adicionadas ao usuário HL5dqdMBg5Wa01y073LJTzv87FS2: {bank123/jwt/claims={allowed_roles=[cliente_pf], numeroconta=123456, scope=read:saldo read:extrato write:transacoes read:perfil, default_role=cliente_pf}}
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10:15 min
+[INFO] Finished at: 2025-12-21T10:30:43-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.5.8:run (default-cli) on project bffbank: Process terminated with exit code: 137 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+
+
+
+================================================
+FILE: banco-postgres/backup-env-2025-12-23.sql
+================================================
+--
+-- PostgreSQL database dump
+--
+
+\restrict aj3uDA4rM6cEvEBRiwBWIIMpD6269yZpXZRYYCbkOPoXUWSpaR7caBvPF8JSIAN
+
+-- Dumped from database version 17.7
+-- Dumped by pg_dump version 17.7 (Homebrew)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: clientes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.clientes (
+    id_cliente integer NOT NULL,
+    nome_completo character varying(100) NOT NULL,
+    cpf character varying(14) NOT NULL,
+    email character varying(150),
+    data_nascimento date,
+    endereco_logradouro character varying(150),
+    endereco_numero character varying(20),
+    endereco_complemento character varying(50),
+    endereco_bairro character varying(50),
+    endereco_cidade character varying(100),
+    endereco_estado character varying(255),
+    endereco_cep character varying(9),
+    data_atualizacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    numeroconta integer NOT NULL
+);
+
+
+ALTER TABLE public.clientes OWNER TO postgres;
+
+--
+-- Name: clientes_id_cliente_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.clientes_id_cliente_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.clientes_id_cliente_seq OWNER TO postgres;
+
+--
+-- Name: clientes_id_cliente_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.clientes_id_cliente_seq OWNED BY public.clientes.id_cliente;
+
+
+--
+-- Name: contas_numeroconta_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.contas_numeroconta_seq
+    START WITH 123457
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.contas_numeroconta_seq OWNER TO postgres;
+
+--
+-- Name: contas; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contas (
+    numeroconta integer DEFAULT nextval('public.contas_numeroconta_seq'::regclass) NOT NULL,
+    datacriacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    saldo numeric(15,2) NOT NULL,
+    email character varying(150),
+    id_user_firebase character varying(100),
+    status character varying(20) DEFAULT 'ativa'::character varying
+);
+
+
+ALTER TABLE public.contas OWNER TO postgres;
+
+--
+-- Name: livrocaixa; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.livrocaixa (
+    idtransacao integer NOT NULL,
+    datatransacao timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    valortransacao numeric(15,2) NOT NULL,
+    numeroconta integer NOT NULL,
+    operacao character varying(10),
+    destino character varying(255),
+    origem character varying(255),
+    CONSTRAINT livrocaixa_operacao_check CHECK (((operacao)::text = ANY (ARRAY[('ENTRADA'::character varying)::text, ('SAIDA'::character varying)::text])))
+);
+
+
+ALTER TABLE public.livrocaixa OWNER TO postgres;
+
+--
+-- Name: livrocaixa_idtransacao_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.livrocaixa_idtransacao_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.livrocaixa_idtransacao_seq OWNER TO postgres;
+
+--
+-- Name: livrocaixa_idtransacao_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.livrocaixa_idtransacao_seq OWNED BY public.livrocaixa.idtransacao;
+
+
+--
+-- Name: posts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.posts (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL,
+    content text,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.posts OWNER TO postgres;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.posts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.posts_id_seq OWNER TO postgres;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.posts_id_seq OWNED BY public.posts.id;
+
+
+--
+-- Name: clientes id_cliente; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clientes ALTER COLUMN id_cliente SET DEFAULT nextval('public.clientes_id_cliente_seq'::regclass);
+
+
+--
+-- Name: livrocaixa idtransacao; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livrocaixa ALTER COLUMN idtransacao SET DEFAULT nextval('public.livrocaixa_idtransacao_seq'::regclass);
+
+
+--
+-- Name: posts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_id_seq'::regclass);
+
+
+--
+-- Data for Name: clientes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.clientes (id_cliente, nome_completo, cpf, email, data_nascimento, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, data_atualizacao, numeroconta) FROM stdin;
+1	Fabio Pereira	123.456.789-00	teste@teste.com.br	1979-04-20	Av. Paulista	1000	Rua das bacias	Bela Vista	São Paulo	SP	01310-100	2025-12-13 10:04:07.784694	123471
+\.
+
+
+--
+-- Data for Name: contas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.contas (numeroconta, datacriacao, saldo, email, id_user_firebase, status) FROM stdin;
+123457	2025-12-20 22:46:19.541841	0.00	fabio.alvaro@gmail.com	123	ativa
+123458	2025-12-20 22:46:54.173863	0.00	fabio.alvaro@gmail.com	123	ativa
+123467	2025-12-21 14:16:02.86403	0.00	fabio.alvaro@gmail.com	UufzefbskVZKUFRI4sGn45Ekluu1	ativa
+123466	2025-12-21 13:50:52.919089	50000.00	manga@teste.com.br	aCfLrhcPstP9f5CwNVIPtpvVxw53	ativa
+123470	2025-12-21 16:38:26.467274	0.00	uva@teste.com.br	rVf0xL3cBGPscc8JmRJhewAxcIL2	ativa
+123456	2025-12-13 10:04:07.770759	1000.00	teste222@teste.com.br	L8AcHrfkHtUB1AxsfBdlfkhaMXG2	ativa
+123471	2025-12-21 22:04:16.259943	40000.00	teste@teste.com.br	qVi4nh7xsZfQUnk8Ii2MspwyrZb2	ativa
+123472	2025-12-21 23:19:01.463748	0.00	limao@teste.com.br	S4SAvWbkt0Pu18v82svNfFXAkK73	ativa
+123473	2025-12-21 23:48:29.799631	0.00	morango@teste.com.br	vJqdKBVVyyOwSPVNoqro9Ffwjzs1	ativa
+\.
+
+
+--
+-- Data for Name: livrocaixa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.livrocaixa (idtransacao, datatransacao, valortransacao, numeroconta, operacao, destino, origem) FROM stdin;
+1	2025-12-13 10:04:07.772058	60.00	123471	SAIDA	Fabio Pereira	Tatiana Favoretti
+2	2025-12-21 19:32:53.141936	50.00	123456	ENTRADA	123	123
+3	2025-12-21 19:44:41.657496	50.00	123456	SAIDA	123456	123456
+4	2025-12-21 19:50:21.677585	50.00	123456	SAIDA	123456	123456
+5	2025-12-21 19:50:48.232732	50.00	123456	SAIDA	123471	123456
+6	2025-12-21 19:52:22.393931	50.00	123456	SAIDA	123471	123456
+7	2025-12-21 19:52:29.774637	125.00	123456	SAIDA	123471	123456
+8	2025-12-21 19:52:47.495671	125.00	123456	SAIDA	123471	123456
+9	2025-12-21 19:52:48.721421	125.00	123456	SAIDA	123471	123456
+10	2025-12-21 23:09:09.023249	127.00	123470	SAIDA	123471	123470
+11	2025-12-21 23:09:36.535109	1000.00	123470	SAIDA	123466	123470
+12	2025-12-21 23:13:52.03528	3000.00	123466	SAIDA	123470	123466
+13	2025-12-21 23:17:36.8813	852.00	123466	SAIDA	123471	123466
+14	2025-12-21 23:20:36.422079	123.00	123472	SAIDA	123470	123472
+15	2025-12-21 23:20:48.476491	234.00	123472	SAIDA	123471	123472
+16	2025-12-21 23:21:04.007886	345.00	123472	SAIDA	123466	123472
+17	2025-12-21 23:25:02.746766	123.00	123472	SAIDA	123	123472
+18	2025-12-21 23:32:09.08893	123.00	123472	SAIDA	123471	123472
+19	2025-12-21 23:49:47.817849	123451111.11	123472	SAIDA	123456	123472
+20	2025-12-21 23:50:03.968437	999999999.99	123472	SAIDA	123456	123472
+21	2025-12-22 18:44:13.87103	25.14	123471	SAIDA	123470	123471
+22	2025-12-22 19:29:07.703809	2300.00	123471	SAIDA	123466	123471
+23	2025-12-22 21:21:32.560335	2563.65	123470	SAIDA	123471	123470
+\.
+
+
+--
+-- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.posts (id, title, content, created_at) FROM stdin;
+\.
+
+
+--
+-- Name: clientes_id_cliente_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.clientes_id_cliente_seq', 1, true);
+
+
+--
+-- Name: contas_numeroconta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.contas_numeroconta_seq', 123473, true);
+
+
+--
+-- Name: livrocaixa_idtransacao_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.livrocaixa_idtransacao_seq', 23, true);
+
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.posts_id_seq', 1, false);
+
+
+--
+-- Name: clientes clientes_cpf_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clientes
+    ADD CONSTRAINT clientes_cpf_key UNIQUE (cpf);
+
+
+--
+-- Name: clientes clientes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clientes
+    ADD CONSTRAINT clientes_pkey PRIMARY KEY (id_cliente);
+
+
+--
+-- Name: contas contas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.contas
+    ADD CONSTRAINT contas_pkey PRIMARY KEY (numeroconta);
+
+
+--
+-- Name: livrocaixa livrocaixa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livrocaixa
+    ADD CONSTRAINT livrocaixa_pkey PRIMARY KEY (idtransacao);
+
+
+--
+-- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.posts
+    ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_clientes_numeroconta; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_clientes_numeroconta ON public.clientes USING btree (numeroconta);
+
+
+--
+-- Name: livrocaixa fk_conta; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.livrocaixa
+    ADD CONSTRAINT fk_conta FOREIGN KEY (numeroconta) REFERENCES public.contas(numeroconta);
+
+
+--
+-- Name: clientes fk_conta_cliente; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.clientes
+    ADD CONSTRAINT fk_conta_cliente FOREIGN KEY (numeroconta) REFERENCES public.contas(numeroconta) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict aj3uDA4rM6cEvEBRiwBWIIMpD6269yZpXZRYYCbkOPoXUWSpaR7caBvPF8JSIAN
+
+
+
+
+================================================
+FILE: banco-postgres/docker-compose.yml
+================================================
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: bank123-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: bank123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: bank123_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Mapeia o script de inicialização para ser executado na criação do container
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Persistência dos dados para não perder se reiniciar o container
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+
+================================================
+FILE: banco-postgres/init.sql
+================================================
+-- Criação da Tabela de Contas
+CREATE TABLE IF NOT EXISTS Contas (
+    numeroConta INTEGER PRIMARY KEY, -- [cite: 18]
+    dataCriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- [cite: 19]
+    saldo DECIMAL(15, 2) NOT NULL -- 
+);
+
+-- Criação da Tabela de Livro Caixa (Movimentações)
+CREATE TABLE IF NOT EXISTS livroCaixa (
+    idtransacao SERIAL PRIMARY KEY, -- [cite: 22]
+    dataTransacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- [cite: 23]
+    valorTransacao DECIMAL(15, 2) NOT NULL, -- [cite: 24]
+    numeroConta INTEGER NOT NULL, -- [cite: 25]
+    operacao VARCHAR(10) CHECK (operacao IN ('ENTRADA', 'SAIDA')), -- [cite: 26]
+    destino VARCHAR(255), -- [cite: 27]
+    origem VARCHAR(255), -- [cite: 28]
+    
+    -- Chave estrangeira ligando à tabela de Contas
+    CONSTRAINT fk_conta
+      FOREIGN KEY(numeroConta) 
+      REFERENCES Contas(numeroConta)
+);
+
+-- (Opcional) Inserir dados de exemplo para testar
+INSERT INTO Contas (numeroConta, saldo) VALUES (123456, 1000.00);
+
+INSERT INTO livroCaixa (valorTransacao, numeroConta, operacao, destino, origem) 
+VALUES (60.00, 123456, 'SAIDA', 'Fabio Pereira', 'Tatiana Favoretti');-- 1. Criação da Tabela de Clientes (Dados Sensíveis/PII)
+-- Esta tabela centraliza as informações do dono da conta
+CREATE TABLE IF NOT EXISTS Clientes (
+    id_cliente SERIAL PRIMARY KEY,
+    nome_completo VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    email VARCHAR(150),
+    data_nascimento DATE,
+    
+    -- Dados de Endereço (Normalizados)
+    endereco_logradouro VARCHAR(150),
+    endereco_numero VARCHAR(20),
+    endereco_complemento VARCHAR(50),
+    endereco_bairro VARCHAR(50),
+    endereco_cidade VARCHAR(100),
+    endereco_estado CHAR(2), -- Ex: SP, RJ
+    endereco_cep VARCHAR(9), -- Ex: 12345-678
+    
+    -- Auditoria
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Vínculo com a Conta Bancária
+    numeroconta INTEGER NOT NULL,
+    CONSTRAINT fk_conta_cliente FOREIGN KEY (numeroconta)
+        REFERENCES Contas (numeroconta)
+        ON DELETE CASCADE
+);
+
+-- 2. Índices para Performance
+-- Como a busca no endpoint será pelo header x-account-id, esse índice é vital.
+CREATE INDEX idx_clientes_numeroconta ON Clientes(numeroconta);
+
+-- 3. Carga de Dados Inicial (Seed)
+-- Inserindo seus dados vinculados à conta 123456 que já existe no dump
+INSERT INTO Clientes (
+    nome_completo, 
+    cpf, 
+    email, 
+    endereco_logradouro, 
+    endereco_numero, 
+    endereco_bairro, 
+    endereco_cidade, 
+    endereco_estado, 
+    endereco_cep, 
+    numeroconta
+) VALUES (
+    'Fabio Pereira', 
+    '123.456.789-00', 
+    'fabio.pereira@bank123.com', 
+    'Av. Paulista', 
+    '1000', 
+    'Bela Vista', 
+    'São Paulo', 
+    'SP', 
+    '01310-100', 
+    123456 --
+);
+
+
+================================================
+FILE: banco-postgres/Leiame.txt
+================================================
+## GERAR BACKUP
+
+docker exec -t bank123-postgres pg_dump -U bank123 bank123_db > dump-bank123-v15.sql
+
+
+
+
+================================================
+FILE: nixpacks/nixpacks.toml
+================================================
+# Força o Nixpacks a usar o Maven e a ignorar outros detectores !!!
+[phases]
+build = "mvn clean install -DskipTests"
+start = "java -jar target/*.jar"
+
+[detectors]
+order = ["maven", "gradle"] # Coloca Maven e Gradle antes de Dart
+
+
+================================================
+FILE: postman/bff-bank123.postman_collection.json
+================================================
+{
+	"info": {
+		"_postman_id": "d483a622-31f3-47cd-8114-a163bd8a1f5b",
+		"name": "bff-bank123",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23741639",
+		"_collection_link": "https://www.postman.com/martian-resonance-528707/workspace/tcc-bank-123/collection/23741639-d483a622-31f3-47cd-8114-a163bd8a1f5b?action=share&source=collection_link&creator=23741639"
+	},
+	"item": [
+		{
+			"name": "get extrato",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-account-id",
+						"value": "{{conta-id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "{{$randomUUID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/bff-bank123/extrato/v1/listagem",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"bff-bank123",
+						"extrato",
+						"v1",
+						"listagem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get saldo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-account-id",
+						"value": "{{conta-id}}",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "{{$randomUUID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/bff-bank123/extrato/v1/saldo",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"bff-bank123",
+						"extrato",
+						"v1",
+						"saldo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{vault:authorization-password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "user",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
+
+
+================================================
+FILE: postman/tcc-bank123_DEV.postman_environment.json
+================================================
+{
+	"id": "e4c22f1e-e788-4f6a-bedd-8bbac24f9bec",
+	"name": "tcc-bank123_DEV",
+	"values": [
+		{
+			"key": "url",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "conta-id",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-12-12T23:37:54.189Z",
+	"_postman_exported_using": "Postman/11.71.5"
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/BffbankApplication.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class BffbankApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BffbankApplication.class, args);
+	}
+
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/ManualClaimsUpdate.javaxxx
+================================================
+package br.com.fabioalvaro.bank123.bffbank;
+
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ManualClaimsUpdate {
+
+    public static void main(String[] args) {
+        try {
+            // 1. CAMINHO ABSOLUTO (Aponta direto para o arquivo que você salvou)
+            String pasta = "/Users/fabioalvaropereira/workspaces/tcc/projeto-bank123/bank123-bff/src/main/resources/";
+            String arquivo = "serviceAccountKey.json"; // Confirme se o nome é esse mesmo
+            String caminhoCompleto = pasta + arquivo;
+
+            System.out.println("📂 Lendo arquivo de: " + caminhoCompleto);
+
+            // -------------------------------------------------------------------
+            // PARTE A: Teste de Conexão e Claims
+            // -------------------------------------------------------------------
+            
+            // Limpa o Firebase se já estiver na memória
+            if (!FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.getApps().forEach(FirebaseApp::delete);
+            }
+
+            // Lê direto do disco (sem passar pelo classpath do Maven)
+            FileInputStream serviceAccount = new FileInputStream(caminhoCompleto);
+
+            FirebaseOptions options = FirebaseOptions.builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
+
+            FirebaseApp.initializeApp(options);
+            System.out.println("🔥 Firebase conectado com sucesso!");
+
+            // Dados para o update
+            String targetUid = "B3Bajpk5XTMcxB4ezRcy40sMJY62";
+            Integer numeroConta = 123456;
+
+            Map<String, Object> appClaims = new HashMap<>();
+            appClaims.put("numeroconta", numeroConta);
+            appClaims.put("default_role", "cliente_pf");
+            appClaims.put("allowed_roles", List.of("cliente_pf"));
+            appClaims.put("scope", "read:saldo read:extrato write:transacoes read:perfil");
+
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("bank123/jwt/claims", appClaims);
+
+            System.out.println("⏳ Aplicando claims...");
+            FirebaseAuth.getInstance().setCustomUserClaims(targetUid, claims);
+            System.out.println("✅ SUCESSO! Claims aplicadas. O arquivo é válido.");
+
+            // -------------------------------------------------------------------
+            // PARTE B: Gerador de Base64 para Produção
+            // -------------------------------------------------------------------
+            System.out.println("\n--- [ GERADOR DE BASE64 PARA ENV VAR ] ---");
+            byte[] fileContent = Files.readAllBytes(Paths.get(caminhoCompleto));
+            String base64 = Base64.getEncoder().encodeToString(fileContent);
+            
+            System.out.println("Copie o código abaixo para sua variável FIREBASE_KEY_JSON:");
+            System.out.println("");
+            System.out.println(base64);
+            System.out.println("");
+            System.out.println("------------------------------------------");
+
+        } catch (Exception e) {
+            System.err.println("❌ ERRO: " + e.getMessage());
+            e.printStackTrace();
+            System.err.println("\nDICA: Verifique se o arquivo se chama 'serviceAccountKey.json' mesmo.");
+        }
+    }
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/config/FirebaseConfig.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.config;
+
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+@Configuration
+public class FirebaseConfig {
+
+    @Bean
+    public FirebaseAuth firebaseAuth(FirebaseApp firebaseApp) {
+        return FirebaseAuth.getInstance(firebaseApp);
+    }
+
+    @Bean
+    public FirebaseApp firebaseApp() throws IOException {
+        String firebaseKeyJson = getFirebaseKeyJsonEnv();
+        InputStream serviceAccount;
+
+        if (firebaseKeyJson != null && !firebaseKeyJson.isBlank()) {
+            System.out.println("Carregando credenciais do Firebase via variável de ambiente FIREBASE_KEY_JSON.");
+            firebaseKeyJson = firebaseKeyJson.trim();
+            System.out.println("Tamanho recebido: " + firebaseKeyJson.length());
+            if (firebaseKeyJson.length() > 10) {
+                System.out.println("Início da string: " + firebaseKeyJson.substring(0, 10));
+            }
+            
+            // Remove aspas duplas no início e fim, se existirem
+            if (firebaseKeyJson.startsWith("\"") && firebaseKeyJson.endsWith("\"")) {
+                firebaseKeyJson = firebaseKeyJson.substring(1, firebaseKeyJson.length() - 1);
+                System.out.println("Aspas removidas. Novo tamanho: " + firebaseKeyJson.length());
+            }
+
+            // Se não começar com '{', assumimos que é Base64
+            if (!firebaseKeyJson.trim().startsWith("{")) {
+                try {
+                    System.out.println("Tentando decodificar Base64...");
+                    // Usar MimeDecoder pois ele ignora quebras de linha e espaços
+                    byte[] decoded = java.util.Base64.getMimeDecoder().decode(firebaseKeyJson);
+                    String decodedString = new String(decoded, StandardCharsets.UTF_8);
+                    
+                    if (decodedString.trim().startsWith("{")) {
+                        System.out.println("Credenciais decodificadas de Base64 com sucesso.");
+                        firebaseKeyJson = decodedString;
+                    } else {
+                        System.out.println("Decodificação resultou em algo que não é JSON: " + 
+                            (decodedString.length() > 10 ? decodedString.substring(0, 10) : decodedString));
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erro ao tentar decodificar FIREBASE_KEY_JSON: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            serviceAccount = new ByteArrayInputStream(firebaseKeyJson.getBytes(StandardCharsets.UTF_8));
+        } else {
+            System.out.println("Variável FIREBASE_KEY_JSON não definida. Tentando carregar serviceAccountKey.json do classpath.");
+            // Tenta carregar do classpath (dentro do jar/resources) como fallback
+            serviceAccount = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("serviceAccountKey.json");
+        }
+
+        if (serviceAccount == null) {
+            throw new IOException("Configuração do Firebase não encontrada. " +
+                    "Defina a variável de ambiente FIREBASE_KEY_JSON ou garanta que o arquivo serviceAccountKey.json esteja no classpath.");
+        }
+
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
+
+        // Evita erro de inicializar duas vezes se o Spring reiniciar
+        if (FirebaseApp.getApps().isEmpty()) {
+            return FirebaseApp.initializeApp(options);
+        }
+        return FirebaseApp.getInstance();
+    }
+
+    protected String getFirebaseKeyJsonEnv() {
+        return System.getenv("FIREBASE_KEY_JSON");
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/config/SecurityConfig.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.config;
+
+import br.com.fabioalvaro.bank123.bffbank.security.FirebaseTokenFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig {
+
+    private final FirebaseTokenFilter firebaseTokenFilter;
+
+    public SecurityConfig(FirebaseTokenFilter firebaseTokenFilter) {
+        this.firebaseTokenFilter = firebaseTokenFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable()) // API REST não precisa de CSRF
+            .authorizeHttpRequests(auth -> auth
+                // Libera o actuator (health check)
+                .requestMatchers("/actuator/**").permitAll()
+                // Libera o Swagger UI e os docs da API
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                // Libera o webhook de onboarding
+                .requestMatchers("/onboarding/v1/webhook-firebase-add").permitAll()
+                // Libera o webhook de onboarding
+                .requestMatchers("/comandos/**").permitAll()
+                // Opcional: Liberar OPTIONS para CORS se o front estiver em outro domínio
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // TODAS as outras requisições precisam de autenticação
+                .anyRequest().authenticated()
+            )
+            // Insere nosso filtro ANTES do filtro padrão do Spring
+            .addFilterBefore(firebaseTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/controller/ComandosController.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.MudarClaimRequest;
+import br.com.fabioalvaro.bank123.bffbank.service.OnboardingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/comandos/v1")
+@Tag(name = "comandos-controller", description = "Endpoints para execução de comandos administrativos e operacionais")
+@Slf4j
+public class ComandosController {
+
+    @Autowired
+    private OnboardingService onboardingService;
+
+    @Operation(summary = "Adicionar/Refazer Claims", description = "Reaplica as custom claims do Firebase para uma conta específica via número da conta, forçando um UID específico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Claims atualizadas com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Conta não encontrada."),
+            @ApiResponse(responseCode = "500", description = "Erro interno ao processar claims.")
+    })
+    @PostMapping("/funcao-mudar-claim/{numeroconta}")
+    public ResponseEntity<String> adicionarClaimsAoUsuario(
+            @Parameter(description = "Número da conta para atualizar as claims", required = true)
+            @PathVariable("numeroconta") Integer numeroConta,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Payload contendo o UID do usuário (opcional, se fornecido será usado)", required = true)
+            @RequestBody MudarClaimRequest request) {
+        
+        log.info("Recebida requisição para atualizar claims da conta: {} com UID: {}", numeroConta, request.getUid());
+        try {
+            if (request.getUid() != null && !request.getUid().isEmpty()) {
+                onboardingService.refazerClaims(numeroConta, request.getUid());
+            } else {
+                onboardingService.refazerClaims(numeroConta);
+            }
+            return ResponseEntity.ok("Claims atualizadas com sucesso para a conta " + numeroConta);
+        } catch (RuntimeException e) {
+            log.error("Erro ao atualizar claims: {}", e.getMessage());
+            if (e.getMessage().contains("Conta não encontrada")) {
+                return ResponseEntity.notFound().build();
+            }
+            throw e;
+        }
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/controller/ExtratoController.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.SaldoResponse;
+import br.com.fabioalvaro.bank123.bffbank.dto.TransacaoResponse;
+import br.com.fabioalvaro.bank123.bffbank.service.ExtratoService;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/bff-bank123/extrato/v1")
+public class ExtratoController {
+
+    @Autowired
+    private ExtratoService service;
+
+    @GetMapping("/saldo")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:saldo')")
+    public ResponseEntity<SaldoResponse> consultarSaldo(
+            @RequestHeader(value = "Authorization", required = false) String token, // Opcional por enquanto
+            @RequestHeader("x-account-id") Integer accountId,
+            @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String correlationId) {
+        
+        // Log para rastreamento
+        MDC.put("correlation-id", correlationId);
+        System.out.println("Consultando saldo para conta: " + accountId);
+
+        try {
+            // Usa o header x-account-id para buscar no banco
+            return ResponseEntity.ok(service.buscarSaldo(accountId));
+        } finally {
+            MDC.clear();
+        }
+    }
+
+    @GetMapping("/listagem")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:extrato')")
+    public ResponseEntity<List<TransacaoResponse>> listarExtrato(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestHeader("x-account-id") Integer accountId,
+            @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String correlationId) {
+        
+        MDC.put("correlation-id", correlationId);
+        System.out.println("Consultando extrato para conta: " + accountId);
+        
+        try {
+            return ResponseEntity.ok(service.buscarExtrato(accountId));
+        } finally {
+            MDC.clear();
+        }
+    }
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/controller/InvestimentosController.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.CarteiraResponse;
+import br.com.fabioalvaro.bank123.bffbank.service.InvestimentosService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/bff-bank123/investimentos/v1")
+@RequiredArgsConstructor
+@Slf4j
+@Tag(name = "investimentos-controller", description = "API de Investimentos")
+public class InvestimentosController {
+
+    private final InvestimentosService investimentosService;
+
+    @Operation(summary = "Consultar Carteira de Investimentos", operationId = "consultarCarteira")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = CarteiraResponse.class)))
+    })
+    @GetMapping("/carteira")
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:investimentos')")
+    public ResponseEntity<CarteiraResponse> consultarCarteira(
+            @Parameter(description = "Token de autorização JWT", required = false)
+            @RequestHeader(value = "Authorization", required = false) String authorization,
+
+            @Parameter(description = "ID da conta do usuário", required = true)
+            @RequestHeader(value = "x-account-id") Integer accountId,
+
+            @Parameter(description = "ID de correlação para rastreamento de requisições", required = false)
+            @RequestHeader(value = "x-correlation-id", required = false, defaultValue = "uuid-fake") String correlationId
+    ) {
+        log.info("Consultando carteira para accountId: {}, correlationId: {}", accountId, correlationId);
+        CarteiraResponse response = investimentosService.obterCarteira(accountId);
+        return ResponseEntity.ok(response);
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/controller/MovimentacoesController.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.TransferenciaContaRequest;
+import br.com.fabioalvaro.bank123.bffbank.dto.TransferenciaContaResponse;
+import br.com.fabioalvaro.bank123.bffbank.service.MovimentacoesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/bff-bank123/movimentacoes/v1")
+@RequiredArgsConstructor
+@Slf4j
+@Tag(name = "movimentacoes-controller", description = "API de Movimentações")
+public class MovimentacoesController {
+
+    private final MovimentacoesService movimentacoesService;
+
+    @Operation(summary = "Realizar Transferência entre Contas", operationId = "transferenciaConta")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Transferência criada com sucesso",
+                    content = @Content(schema = @Schema(implementation = TransferenciaContaResponse.class)))
+    })
+    @PostMapping("/transferencia-conta")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('write:transacoes')")
+    public ResponseEntity<TransferenciaContaResponse> transferenciaConta(
+            @Parameter(description = "Token de autorização JWT", required = false)
+            @RequestHeader(value = "Authorization", required = false) String authorization,
+
+            @Parameter(description = "ID da conta do usuário", required = true)
+            @RequestHeader(value = "x-account-id") Integer accountId,
+
+            @Parameter(description = "ID de correlação para rastreamento de requisições", required = false)
+            @RequestHeader(value = "x-correlation-id", required = false, defaultValue = "uuid-fake") String correlationId,
+
+            @RequestBody TransferenciaContaRequest request
+    ) {
+        log.info("Processando transferência para accountId: {}, valor: {}, correlationId: {}", 
+                accountId, request.getValor(), correlationId);
+        
+        TransferenciaContaResponse response = movimentacoesService.realizarTransferencia(accountId, correlationId, request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/controller/OnboardingController.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.WebhookFirebasePayload;
+import br.com.fabioalvaro.bank123.bffbank.service.OnboardingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@Slf4j
+@RestController
+@RequestMapping("/onboarding/v1")
+@Tag(name = "onboarding-controller", description = "Gerencia operações de onboarding")
+public class OnboardingController {
+
+    @Autowired
+    private OnboardingService onboardingService;
+
+    @Operation(summary = "Recebe webhook do Firebase", description = "Processa dados de criação de usuário via webhook.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Webhook recebido com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos.")
+    })
+    @PostMapping("/webhook-firebase-add")
+    public ResponseEntity<WebhookFirebasePayload> receberWebhook(
+            @RequestBody WebhookFirebasePayload payload,
+            @RequestHeader Map<String, String> headers) {
+        log.info(">>> REQUEST [POST] /onboarding/v1/webhook-firebase-add");
+        log.info(">>> REQUEST HEADERS: {}", headers);
+        log.info(">>> REQUEST BODY: {}", payload);
+
+        onboardingService.processarWebhook(payload);
+
+        ResponseEntity<WebhookFirebasePayload> response = ResponseEntity.ok(payload);
+
+        log.info("<<< RESPONSE [POST] /onboarding/v1/webhook-firebase-add");
+        log.info("<<< RESPONSE STATUS CODE: {}", response.getStatusCode());
+        log.info("<<< RESPONSE HEADERS: {}", response.getHeaders());
+        log.info("<<< RESPONSE BODY: {}", response.getBody());
+
+        return response;
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/controller/UsuarioController.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.PerfilResponse;
+import br.com.fabioalvaro.bank123.bffbank.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/bff-bank123/usuario/v1/perfil")
+@Tag(name = "perfil-controller", description = "Gerencia operações relacionadas ao perfil do usuário")
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Operation(summary = "Obtém o perfil do usuário", description = "Retorna os detalhes do perfil do usuário logado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operação bem-sucedida, perfil retornado."),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+            @ApiResponse(responseCode = "401", description = "Não autorizado."),
+            @ApiResponse(responseCode = "404", description = "Perfil não encontrado.")
+    })
+    @GetMapping
+    @PreAuthorize("hasAuthority('cliente_pf') and hasAuthority('read:perfil')")
+    public ResponseEntity<PerfilResponse> obterPerfil(
+            @Parameter(description = "E-mail do usuário no Firebase", required = true)
+            @RequestHeader("x-email-firebase") String xEmailFirebase,
+            @Parameter(description = "ID de correlação para rastreamento de requisições", example = "uuid-fake")
+            @RequestHeader(value = "x-correlation-id", defaultValue = "uuid-fake") String xCorrelationId,
+            @Parameter(description = "Token de autorização JWT", required = false)
+            @RequestHeader(value = "Authorization", required = false) String authorization) {
+        
+        PerfilResponse perfil = usuarioService.getPerfil(xEmailFirebase);
+        return ResponseEntity.ok(perfil);
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/CarteiraResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CarteiraResponse {
+    private List<InvestimentoItemResponse> carteira;
+    private CarteiraResumoResponse resumo;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/CarteiraResumoResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CarteiraResumoResponse {
+    private BigDecimal totalInvestido;
+    private Integer quantidadeAtivos;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/InvestimentoItemResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class InvestimentoItemResponse {
+    private String ticker;
+    private String nomeEmpresa;
+    private String tipo;
+    private String instituicao;
+    private Integer quantidade;
+    private BigDecimal precoFechamento;
+    private BigDecimal valorTotal;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/MudarClaimRequest.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.Data;
+
+@Data
+public class MudarClaimRequest {
+    private String uid;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/PerfilResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PerfilResponse {
+    private String nomeCompleto;
+    private String endereco;
+    private String agencia;
+    private Integer numeroConta;
+    private String idUserFirebase;
+    private String status;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/SaldoResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class SaldoResponse {
+    private Integer numeroConta;
+    private BigDecimal saldo;
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/TransacaoResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransacaoResponse {
+    private Integer idTransacao;
+    private LocalDateTime dataTransacao;
+    private BigDecimal valorTransacao;
+    private String operacao;
+    private String destino;
+    private String origem;
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/TransferenciaContaRequest.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransferenciaContaRequest {
+    private String valor;
+
+    @JsonProperty("destino-conta")
+    private String destinoConta;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/TransferenciaContaResponse.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransferenciaContaResponse {
+    private String valor;
+
+    @JsonProperty("transacao-id")
+    private String transacaoId;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/dto/WebhookFirebasePayload.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class WebhookFirebasePayload {
+    private String uid;
+    private String email;
+    private String displayName;
+    private String createdAt;
+    private String provider;
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/filter/MdcFilter.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.filter;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.UUID;
+
+@Component
+@Order(1)
+@Slf4j
+public class MdcFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        String correlationId = req.getHeader("x-correlation-id");
+        if (correlationId == null || correlationId.isEmpty()) {
+            correlationId = UUID.randomUUID().toString();
+        }
+        MDC.put("x-correlation-id", correlationId);
+        MDC.put("path", req.getRequestURI()); // Adiciona o Path da URL
+        MDC.put("method", req.getMethod());   // Adiciona o método (GET, POST)
+
+        StringBuilder headers = new StringBuilder();
+        Enumeration<String> headerNames = req.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = req.getHeader(headerName);
+
+            if ("Authorization".equalsIgnoreCase(headerName) || "x-itau-auth".equalsIgnoreCase(headerName)) {
+                headerValue = "?";
+            }
+
+            headers.append(headerName).append(": ").append(headerValue);
+            if (headerNames.hasMoreElements()) {
+                headers.append(" | ");
+            }
+        }
+        log.info("Nova request recebida: {} {} Headers: [{}]", req.getMethod(), req.getRequestURI(), headers);
+
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            MDC.remove("x-correlation-id");
+            MDC.remove("path");
+            MDC.remove("method");
+        }
+    }
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/model/Cliente.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+import jakarta.persistence.Column;
+
+@Data
+@Entity
+@Table(name = "clientes")
+public class Cliente {
+
+    @Id
+    @Column(name = "id_cliente")
+    private Integer idCliente;
+
+    @Column(name = "nome_completo")
+    private String nomeCompleto;
+
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "numeroconta")
+    private Integer numeroConta;
+
+
+
+    @Column(name = "endereco_logradouro")
+    private String enderecoLogradouro;
+
+    @Column(name = "endereco_numero")
+    private String enderecoNumero;
+
+    @Column(name = "endereco_complemento")
+    private String enderecoComplemento;
+
+    @Column(name = "endereco_bairro")
+    private String enderecoBairro;
+
+    @Column(name = "endereco_cidade")
+    private String enderecoCidade;
+
+    @Column(name = "endereco_estado")
+    private String enderecoEstado;
+
+    @Column(name = "endereco_cep")
+    private String enderecoCep;
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/model/Conta.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Data
+@Entity
+@Table(name = "contas")
+public class Conta {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contas_numeroconta_seq")
+    @SequenceGenerator(name = "contas_numeroconta_seq", sequenceName = "contas_numeroconta_seq", allocationSize = 1)
+    @Column(name = "numeroconta")
+    private Integer numeroConta;
+
+    @Column(name = "datacriacao")
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "saldo")
+    private BigDecimal saldo;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "id_user_firebase")
+    private String idUserFirebase;
+
+    @Column(name = "status")
+    private String status;
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/model/LivroCaixa.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Data
+@Entity
+@Table(name = "livrocaixa")
+public class LivroCaixa {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idtransacao")
+    private Integer idTransacao;
+
+    @Column(name = "datatransacao")
+    private LocalDateTime dataTransacao;
+
+    @Column(name = "valortransacao")
+    private BigDecimal valorTransacao;
+
+    @Column(name = "numeroconta")
+    private Integer numeroConta; // Relacionamento lógico
+
+    @Column(name = "operacao")
+    private String operacao; // ENTRADA ou SAIDA
+
+    @Column(name = "destino")
+    private String destino;
+
+    @Column(name = "origem")
+    private String origem;
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/repository/ClienteRepository.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.repository;
+
+import br.com.fabioalvaro.bank123.bffbank.model.Cliente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+    Optional<Cliente> findByNumeroConta(Integer numeroConta);
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/repository/ContaRepository.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.repository;
+
+import br.com.fabioalvaro.bank123.bffbank.model.Conta;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface ContaRepository extends JpaRepository<Conta, Integer> {
+    Optional<Conta> findByEmail(String email);
+    Optional<Conta> findByIdUserFirebase(String idUserFirebase);
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/repository/LivroCaixaRepository.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.repository;
+
+import br.com.fabioalvaro.bank123.bffbank.model.LivroCaixa;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface LivroCaixaRepository extends JpaRepository<LivroCaixa, Integer> {
+    // Select * from livrocaixa where numeroconta = ?
+    List<LivroCaixa> findByNumeroConta(Integer numeroConta);
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/security/FirebaseTokenFilter.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.security;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+public class FirebaseTokenFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, 
+                                    HttpServletResponse response, 
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
+
+        String header = request.getHeader("Authorization");
+
+        // Se não tem header ou não começa com Bearer, segue o fluxo (o SecurityConfig vai barrar depois)
+        if (header == null || !header.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String token = header.substring(7); // Remove o "Bearer "
+
+        try {
+            // Valida o token no Firebase
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            String email = decodedToken.getEmail();
+            
+            // DEBUG: Imprimir todas as claims para análise
+            System.out.println("=== DEBUG: Claims do Token ===");
+            decodedToken.getClaims().forEach((k, v) -> System.out.println("Claim: " + k + " = " + v));
+            System.out.println("==============================");
+            
+            // Extrai claims/scopes
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            
+            // Tenta obter de bank123/jwt/claims (formato aninhado do usuário)
+            Object customClaims = decodedToken.getClaims().get("bank123/jwt/claims");
+            Object scopeClaim = null;
+            Object roleClaim = null;
+            
+            if (customClaims instanceof java.util.Map) {
+                java.util.Map<String, Object> claimsMap = (java.util.Map<String, Object>) customClaims;
+                
+                // Extrai Scopes
+                scopeClaim = claimsMap.get("scope");
+                if (scopeClaim == null) scopeClaim = claimsMap.get("scp");
+                if (scopeClaim == null) scopeClaim = claimsMap.get("permissions");
+
+                // Extrai Roles (prioriza default_role, depois allowed_roles)
+                roleClaim = claimsMap.get("default_role");
+                if (roleClaim == null) roleClaim = claimsMap.get("allowed_roles");
+            }
+            
+            // Se não encontrou no aninhado, tenta na raiz
+            if (scopeClaim == null) {
+                scopeClaim = decodedToken.getClaims().get("scope");
+                if (scopeClaim == null) scopeClaim = decodedToken.getClaims().get("scp");
+                if (scopeClaim == null) scopeClaim = decodedToken.getClaims().get("permissions");
+            }
+
+            if (roleClaim == null) {
+                roleClaim = decodedToken.getClaims().get("role");
+                if (roleClaim == null) roleClaim = decodedToken.getClaims().get("roles");
+            }
+
+            // Processa Scopes
+            if (scopeClaim != null) {
+                if (scopeClaim instanceof String) {
+                    String[] scopes = ((String) scopeClaim).split(" ");
+                    authorities.addAll(Arrays.stream(scopes)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList()));
+                } else if (scopeClaim instanceof List) {
+                    authorities.addAll(((List<?>) scopeClaim).stream()
+                            .map(Object::toString)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList()));
+                }
+            }
+
+            // Processa Roles
+            if (roleClaim != null) {
+                if (roleClaim instanceof String) {
+                    authorities.add(new SimpleGrantedAuthority((String) roleClaim));
+                } else if (roleClaim instanceof List) {
+                    authorities.addAll(((List<?>) roleClaim).stream()
+                            .map(Object::toString)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList()));
+                }
+            }
+            
+            // DEBUG: Authorities extraídas
+            System.out.println("Authorities extraídas: " + authorities);
+
+            // Cria a identidade do usuário no Spring Security
+            var auth = new UsernamePasswordAuthenticationToken(email, uid, authorities);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+        } catch (Exception e) {
+            // Se o token for inválido, expirado ou falso, limpamos o contexto
+            SecurityContextHolder.clearContext();
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token Firebase Inválido: " + e.getMessage());
+            return;
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/service/ExtratoService.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.service;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.SaldoResponse;
+import br.com.fabioalvaro.bank123.bffbank.dto.TransacaoResponse;
+import br.com.fabioalvaro.bank123.bffbank.model.Conta;
+import br.com.fabioalvaro.bank123.bffbank.repository.ContaRepository;
+import br.com.fabioalvaro.bank123.bffbank.repository.LivroCaixaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ExtratoService {
+
+    @Autowired
+    private ContaRepository contaRepository;
+
+    @Autowired
+    private LivroCaixaRepository livroCaixaRepository;
+
+    public SaldoResponse buscarSaldo(Integer numeroConta) {
+        Conta conta = contaRepository.findById(numeroConta)
+                .orElseThrow(() -> new RuntimeException("Conta " + numeroConta + " não encontrada"));
+        
+        return new SaldoResponse(conta.getNumeroConta(), conta.getSaldo());
+    }
+
+    public List<TransacaoResponse> buscarExtrato(Integer numeroConta) {
+        // Valida se a conta existe antes de buscar o extrato
+        if (!contaRepository.existsById(numeroConta)) {
+             throw new RuntimeException("Conta " + numeroConta + " não encontrada");
+        }
+
+        return livroCaixaRepository.findByNumeroConta(numeroConta).stream()
+                .map(t -> TransacaoResponse.builder()
+                        .idTransacao(t.getIdTransacao())
+                        .dataTransacao(t.getDataTransacao())
+                        .valorTransacao(t.getValorTransacao())
+                        .operacao(t.getOperacao())
+                        .destino(t.getDestino())
+                        .origem(t.getOrigem())
+                        .build())
+                .collect(Collectors.toList());
+    }
+}
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/service/InvestimentosService.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.service;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.CarteiraResponse;
+import br.com.fabioalvaro.bank123.bffbank.dto.CarteiraResumoResponse;
+import br.com.fabioalvaro.bank123.bffbank.dto.InvestimentoItemResponse;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Service
+public class InvestimentosService {
+
+    public CarteiraResponse obterCarteira(Integer accountId) {
+        // Mock data as requested
+        List<InvestimentoItemResponse> investimentos = List.of(
+            InvestimentoItemResponse.builder().ticker("BBAS3").nomeEmpresa("BCO BRASIL S.A.").tipo("ON").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(1057).precoFechamento(new BigDecimal("21.44")).valorTotal(new BigDecimal("22662.08")).build(),
+            InvestimentoItemResponse.builder().ticker("BBSE3").nomeEmpresa("BB SEGURIDADE PARTICIPAÇÕES S.A.").tipo("ON").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(407).precoFechamento(new BigDecimal("35.27")).valorTotal(new BigDecimal("14354.89")).build(),
+            InvestimentoItemResponse.builder().ticker("CMIG4").nomeEmpresa("CIA ENERGETICA DE MINAS GERAIS - CEMIG").tipo("PN").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(901).precoFechamento(new BigDecimal("11.08")).valorTotal(new BigDecimal("9983.08")).build(),
+            InvestimentoItemResponse.builder().ticker("CSUD3").nomeEmpresa("CSU DIGITAL S.A.").tipo("ON").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(1).precoFechamento(new BigDecimal("19.70")).valorTotal(new BigDecimal("19.70")).build(),
+            InvestimentoItemResponse.builder().ticker("ITUB3").nomeEmpresa("ITAU UNIBANCO HOLDING S.A.").tipo("ON").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(1).precoFechamento(new BigDecimal("36.56")).valorTotal(new BigDecimal("36.56")).build(),
+            InvestimentoItemResponse.builder().ticker("PETR4").nomeEmpresa("PETROLEO BRASILEIRO S.A. PETROBRAS").tipo("PN").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(400).precoFechamento(new BigDecimal("31.01")).valorTotal(new BigDecimal("12404.00")).build(),
+            InvestimentoItemResponse.builder().ticker("TASA4").nomeEmpresa("TAURUS ARMAS S.A.").tipo("PN").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(3235).precoFechamento(new BigDecimal("4.66")).valorTotal(new BigDecimal("15075.10")).build(),
+            InvestimentoItemResponse.builder().ticker("VALE3").nomeEmpresa("VALE S.A.").tipo("ON").instituicao("NU INVEST CORRETORA DE VALORES").quantidade(234).precoFechamento(new BigDecimal("70.85")).valorTotal(new BigDecimal("16578.90")).build()
+        );
+
+        CarteiraResumoResponse resumo = CarteiraResumoResponse.builder()
+                .totalInvestido(new BigDecimal("91114.31"))
+                .quantidadeAtivos(8)
+                .build();
+
+        return CarteiraResponse.builder()
+                .carteira(investimentos)
+                .resumo(resumo)
+                .build();
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/service/MovimentacoesService.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.service;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.TransferenciaContaRequest;
+import br.com.fabioalvaro.bank123.bffbank.dto.TransferenciaContaResponse;
+import br.com.fabioalvaro.bank123.bffbank.model.LivroCaixa;
+import br.com.fabioalvaro.bank123.bffbank.repository.LivroCaixaRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class MovimentacoesService {
+
+    private final LivroCaixaRepository livroCaixaRepository;
+
+    public TransferenciaContaResponse realizarTransferencia(Integer accountId, String correlationId, TransferenciaContaRequest request) {
+        log.info("Iniciando serviço de transferência. AccountId: {}, CorrelationId: {}", accountId, correlationId);
+
+        LivroCaixa livroCaixa = new LivroCaixa();
+        livroCaixa.setDataTransacao(LocalDateTime.now());
+        livroCaixa.setValorTransacao(new BigDecimal(request.getValor()));
+        livroCaixa.setNumeroConta(accountId);
+        livroCaixa.setOperacao("SAIDA");
+        livroCaixa.setDestino(request.getDestinoConta());
+        livroCaixa.setOrigem(String.valueOf(accountId));
+
+                LivroCaixa savedLivroCaixa = livroCaixaRepository.save(livroCaixa);
+
+                log.info("Transação salva no livro caixa com sucesso. ID: {}", savedLivroCaixa.getIdTransacao());
+
+        
+
+                return TransferenciaContaResponse.builder()
+
+                        .valor(request.getValor())
+
+                        .transacaoId(String.valueOf(savedLivroCaixa.getIdTransacao()))
+
+                        .build();
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/service/OnboardingService.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.service;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.WebhookFirebasePayload;
+import br.com.fabioalvaro.bank123.bffbank.model.Conta;
+import br.com.fabioalvaro.bank123.bffbank.repository.ContaRepository;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+@Slf4j
+public class OnboardingService {
+
+    @Autowired
+    private ContaRepository contaRepository;
+
+    @Autowired
+    private FirebaseAuth firebaseAuth;
+    
+    public void processarWebhook(WebhookFirebasePayload payload) {
+        log.info("Recebido webhook de onboarding: {}", payload);
+        
+        try {
+            Conta novaConta = new Conta();
+            novaConta.setEmail(payload.getEmail());
+            novaConta.setIdUserFirebase(payload.getUid());
+            novaConta.setDataCriacao(LocalDateTime.now());
+            novaConta.setSaldo(BigDecimal.ZERO);
+            novaConta.setStatus("ativa");
+
+            Conta contaSalva = contaRepository.save(novaConta);
+            log.info("Nova conta criada com sucesso: {}", contaSalva);
+
+            // Adiciona Custom Claims ao usuário no Firebase
+            adicionarClaimsAoUsuario(contaSalva);
+
+        } catch (Exception e) {
+            log.error("Erro ao processar webhook de onboarding: ", e);
+            throw new RuntimeException("Erro ao criar conta", e);
+        }
+    }
+
+    public void adicionarClaimsAoUsuario(Conta conta) {
+        try {
+            Map<String, Object> appClaims = new HashMap<>();
+            appClaims.put("numeroconta", conta.getNumeroConta());
+            appClaims.put("default_role", "cliente_pf");
+            appClaims.put("allowed_roles", java.util.List.of("cliente_pf"));
+            appClaims.put("scope", "read:saldo read:extrato write:transacoes read:perfil");
+
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("bank123/jwt/claims", appClaims);
+
+            firebaseAuth.setCustomUserClaims(conta.getIdUserFirebase(), claims);
+            log.info("Custom claims adicionadas ao usuário {}: {}", conta.getIdUserFirebase(), claims);
+        } catch (FirebaseAuthException e) {
+            log.error("Erro ao adicionar custom claims ao usuário {}: ", conta.getIdUserFirebase(), e);
+            // Não lançamos exceção aqui para não desfazer a criação da conta, 
+            // mas poderia ser implementado um mecanismo de retry ou fila DLQ.
+        }
+    }
+
+    public void refazerClaims(Integer numeroConta) {
+        log.info("Refazendo claims para a conta: {}", numeroConta);
+        Conta conta = contaRepository.findById(numeroConta)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + numeroConta));
+        adicionarClaimsAoUsuario(conta);
+    }
+
+    public void refazerClaims(Integer numeroConta, String uid) {
+        log.info("Refazendo claims para a conta: {} com UID forçado: {}", numeroConta, uid);
+        Conta conta = contaRepository.findById(numeroConta)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + numeroConta));
+        
+        // Atualiza o UID em memória para usar o fornecido no request
+        conta.setIdUserFirebase(uid);
+        
+        adicionarClaimsAoUsuario(conta);
+    }
+
+    public void refazerClaimsPorUid(String uid) {
+        log.info("Refazendo claims para o UID: {}", uid);
+        Conta conta = contaRepository.findByIdUserFirebase(uid)
+                .orElseThrow(() -> new RuntimeException("Conta não encontrada para o UID: " + uid));
+        adicionarClaimsAoUsuario(conta);
+    }
+}
+
+
+
+================================================
+FILE: src/main/java/br/com/fabioalvaro/bank123/bffbank/service/UsuarioService.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.service;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.PerfilResponse;
+import br.com.fabioalvaro.bank123.bffbank.model.Cliente;
+import br.com.fabioalvaro.bank123.bffbank.model.Conta;
+import br.com.fabioalvaro.bank123.bffbank.repository.ClienteRepository;
+import br.com.fabioalvaro.bank123.bffbank.repository.ContaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class UsuarioService {
+
+    @Autowired
+    private ContaRepository contaRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    public PerfilResponse getPerfil(String email) {
+        
+        // 1. Busca a conta pelo e-mail
+        Optional<Conta> contaOptional = contaRepository.findByEmail(email);
+
+        if (contaOptional.isEmpty()) {
+            throw new RuntimeException("Conta não encontrada para o e-mail: " + email);
+        }
+
+        Conta conta = contaOptional.get();
+
+        // 2. Tenta buscar o cliente associado à conta
+        Optional<Cliente> clienteOptional = clienteRepository.findByNumeroConta(conta.getNumeroConta());
+
+        String nomeCompleto = null;
+        String endereco = null;
+
+        if (clienteOptional.isPresent()) {
+            Cliente cliente = clienteOptional.get();
+            nomeCompleto = cliente.getNomeCompleto();
+            endereco = String.format("%s, %s - %s, %s - %s, %s",
+                    cliente.getEnderecoLogradouro(),
+                    cliente.getEnderecoNumero(),
+                    cliente.getEnderecoBairro(),
+                    cliente.getEnderecoCidade(),
+                    cliente.getEnderecoEstado(),
+                    cliente.getEnderecoCep());
+        } else {
+            // Caso onde a conta existe (via onboarding) mas o cliente ainda não completou o cadastro
+            nomeCompleto = conta.getEmail(); // Fallback para o email ou outro identificador
+            endereco = "Cadastro incompleto";
+        }
+
+        // 3. Monta a resposta com dados da Conta e do Cliente (se existir)
+        return new PerfilResponse(
+                nomeCompleto,
+                endereco,
+                "0001", // Agência fixa por enquanto
+                conta.getNumeroConta(),
+                conta.getIdUserFirebase(),
+                conta.getStatus()
+        );
+    }
+}
+
+
+
+================================================
+FILE: src/main/resources/application.properties
+================================================
+spring.application.name=bffbank
+
+# Configuração do Banco de Dados (Docker)
+spring.datasource.url=${DB_URL:jdbc:postgresql://localhost:5432/bank123_db}
+spring.datasource.username=${DB_USERNAME:bank123}
+spring.datasource.password=${DB_PASSWORD:bank123}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Configurações do Hibernate/JPA
+# update: cria/atualiza tabelas se não existirem (mas vamos usar as que o docker criou)
+spring.jpa.hibernate.ddl-auto=validate 
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=false
+
+# Logs
+logging.level.org.hibernate.SQL=OFF
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=OFF
+logging.level.org.hibernate.orm.jdbc.bind=OFF
+
+# Exemplo para limitar o uso se for deployar em container pequeno
+server.tomcat.threads.max=10
+# spring.main.lazy-initialization=true
+
+server.forward-headers-strategy=FRAMEWORK
+
+server.port=8080
+
+
+================================================
+FILE: src/main/resources/logback-spring.xml
+================================================
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="bank123-bff"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [trace=%X{x-correlation-id} user=%X{x-account-id}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>https://logs-prod-024.grafana.net/loki/api/v1/push</url>
+            <auth>
+                <username>${LOKI_USERNAME}</username>
+                <password>${LOKI_PASSWORD}</password>
+            </auth>
+        </http>
+        <format>
+            <label>
+                <pattern>app=${appName},host=${HOSTNAME},level=%level</pattern>
+            </label>
+            <message>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [trace=%X{x-correlation-id} user=%X{x-account-id}] message=%msg%n</pattern>
+            </message>
+            <message class="com.github.loki4j.logback.JsonLayout">
+                <includeTimestamp>true</includeTimestamp>
+                <includeMdc>true</includeMdc>
+                <includeContext>true</includeContext>
+                <includeLoggerName>true</includeLoggerName>
+                <includeMessage>true</includeMessage>
+                <flattenMdc>true</flattenMdc>
+            </message>
+            
+            <sortByTime>true</sortByTime>
+        </format>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="LOKI" />
+    </root>
+
+</configuration>
+
+
+================================================
+FILE: src/test/java/br/com/fabioalvaro/bank123/bffbank/BffbankApplicationTests.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class BffbankApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
+
+
+
+================================================
+FILE: src/test/java/br/com/fabioalvaro/bank123/bffbank/config/FirebaseConfigTest.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.config;
+
+import com.google.firebase.FirebaseApp;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FirebaseConfigTest {
+
+    @AfterEach
+    void tearDown() {
+        // Limpa instâncias do Firebase após cada teste para evitar conflitos
+        if (!FirebaseApp.getApps().isEmpty()) {
+             FirebaseApp.getApps().forEach(FirebaseApp::delete);
+        }
+    }
+
+    @Test
+    void shouldLoadFirebaseAppFromEnvVarContainingJson() throws IOException {
+        // Lê o conteúdo do arquivo real para simular a variável de ambiente
+        String jsonContent = new String(Files.readAllBytes(Paths.get("src/main/resources/serviceAccountKey.json")));
+
+        FirebaseConfig config = new FirebaseConfig() {
+            @Override
+            protected String getFirebaseKeyJsonEnv() {
+                return jsonContent;
+            }
+        };
+
+        FirebaseApp app = config.firebaseApp();
+        assertNotNull(app);
+        assertEquals("[DEFAULT]", app.getName());
+    }
+    
+    @Test
+    void shouldLoadFirebaseAppFromEnvVarContainingBase64() throws IOException {
+        // Lê o conteúdo, encoda em Base64 e simula
+        byte[] jsonBytes = Files.readAllBytes(Paths.get("src/main/resources/serviceAccountKey.json"));
+        String base64Content = Base64.getEncoder().encodeToString(jsonBytes);
+
+        FirebaseConfig config = new FirebaseConfig() {
+            @Override
+            protected String getFirebaseKeyJsonEnv() {
+                return base64Content;
+            }
+        };
+
+        FirebaseApp app = config.firebaseApp();
+        assertNotNull(app);
+        assertEquals("[DEFAULT]", app.getName());
+    }
+}
+
+
+
+================================================
+FILE: src/test/java/br/com/fabioalvaro/bank123/bffbank/controller/ExtratoControllerTest.java
+================================================
+package br.com.fabioalvaro.bank123.bffbank.controller;
+
+import br.com.fabioalvaro.bank123.bffbank.dto.SaldoResponse;
+import br.com.fabioalvaro.bank123.bffbank.dto.TransacaoResponse;
+import br.com.fabioalvaro.bank123.bffbank.service.ExtratoService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(ExtratoController.class)
+public class ExtratoControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ExtratoService extratoService;
+
+    @Test
+    @WithMockUser
+    public void deveRetornarSaldo_quandoExistirConta() throws Exception {
+        // Arrange
+        Integer numeroConta = 123456;
+        BigDecimal saldo = new BigDecimal("1500.75");
+        SaldoResponse saldoResponse = new SaldoResponse(numeroConta, saldo);
+
+        when(extratoService.buscarSaldo(numeroConta)).thenReturn(saldoResponse);
+
+                mockMvc.perform(get("/bff-bank123/extrato/v1/saldo")
+                                .header("x-account-id", numeroConta)
+                                .header("x-correlation-id", "test-id")                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.numeroConta").value(numeroConta))
+                .andExpect(jsonPath("$.saldo").value(saldo.doubleValue()));
+    }
+
+    @Test
+    @WithMockUser
+    public void deveRetornarExtrato_quandoExistirConta() throws Exception {
+        // Arrange
+        Integer numeroConta = 123456;
+        List<TransacaoResponse> extrato = new ArrayList<>();
+        extrato.add(TransacaoResponse.builder()
+                .idTransacao(1)
+                .dataTransacao(LocalDateTime.now())
+.valorTransacao(new BigDecimal("100.00"))
+                .operacao("ENTRADA")
+                .build());
+
+        when(extratoService.buscarExtrato(numeroConta)).thenReturn(extrato);
+
+        // Act & Assert
+        mockMvc.perform(get("/bff-bank123/extrato/v1/listagem")
+                        .header("x-account-id", numeroConta)
+                        .header("x-correlation-id", "test-id")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].idTransacao").value(1));
+    }
+}
+
+
+
+================================================
+FILE: src/test/resources/application.properties
+================================================
+# Configurações do Banco de Dados para Testes (em memória, H2)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+
+# Hibernate para Testes
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=false
+
+
+
+================================================
+FILE: .gemini/settings.json
+================================================
+{
+  "tools": {
+    "autoAccept": true
+  }
+}
+
+
+
+================================================
+FILE: .gemini/settings.json.orig
+================================================
+{
+    "autoAccept":true
+}
+
+
+================================================
+FILE: .gemini/commands/analise-erro.toml
+================================================
+description = "Analise o Erro e de a causa raiz "
+prompt = """
+Rode o projeto.
+Analise o log de Erros
+identifique a causa raiz.
+DE possiveis solucoes a causa raiz.
+"""
+
+
+================================================
+FILE: .gemini/commands/gerar-backup-banco.toml
+================================================
+description = "Gera backup do banco de dados e atualiza o arquivo de dump"
+prompt = """
+Execute o comando abaixo para gerar o backup do banco de dados e atualizar o arquivo de dump na pasta banco-postgres:
+
+docker exec -t bank123-postgres pg_dump -U bank123 bank123_db > banco-postgres/dump-bank123-v15.sql
+
+Após a execução, confirme se o arquivo foi atualizado com sucesso verificando o tamanho ou a data de modificação.
+"""
+
+
+
+================================================
+FILE: .gemini/commands/subir-no-git.toml
+================================================
+description = "Sobe e comita no git"
+prompt = """
+Analise os arquivos modificados no git.
+commit e faca o push do codigo para a branch remota.
+"""
+
+
+================================================
+FILE: .gemini/commands/teste-basico.toml
+================================================
+description = "Explica o código como se fosse um Tiozão do Churrasco"
+prompt = """
+Analise o código selecionado ou o arquivo atual.
+Explique o que ele faz usando gírias antigas, analogias de futebol e piadas ruins.
+Seja técnico, mas engraçado.
+"""
+
+
+================================================
+FILE: .mvn/wrapper/maven-wrapper.properties
+================================================
+distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip
+wrapperUrl=https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar
+
+
+
+================================================
+FILE: .mvn/wrapper/MavenWrapperDownloader.java
+================================================
+/*
+ * Copyright 2007-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import java.net.*;
+import java.io.*;
+import java.nio.channels.*;
+import java.util.Properties;
+
+public class MavenWrapperDownloader {
+
+    private static final String WRAPPER_VERSION = "0.5.6";
+    /**
+     * Default URL to download the maven-wrapper.jar from, if no 'downloadUrl' is provided.
+     */
+    private static final String DEFAULT_DOWNLOAD_URL = "https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/"
+        + WRAPPER_VERSION + "/maven-wrapper-" + WRAPPER_VERSION + ".jar";
+
+    /**
+     * Path to the maven-wrapper.properties file, which might contain a downloadUrl property to
+     * use instead of the default one.
+     */
+    private static final String MAVEN_WRAPPER_PROPERTIES_PATH =
+            ".mvn/wrapper/maven-wrapper.properties";
+
+    /**
+     * Path where the maven-wrapper.jar will be saved to.
+     */
+    private static final String MAVEN_WRAPPER_JAR_PATH =
+            ".mvn/wrapper/maven-wrapper.jar";
+
+    /**
+     * Name of the property which should be used to override the default download url for the wrapper.
+     */
+    private static final String PROPERTY_NAME_WRAPPER_URL = "wrapperUrl";
+
+    public static void main(String args[]) {
+        System.out.println("- Downloader started");
+        File baseDirectory = new File(args[0]);
+        System.out.println("- Using base directory: " + baseDirectory.getAbsolutePath());
+
+        // If the maven-wrapper.properties exists, read it and check if it contains a custom
+        // wrapperUrl parameter.
+        File mavenWrapperPropertyFile = new File(baseDirectory, MAVEN_WRAPPER_PROPERTIES_PATH);
+        String url = DEFAULT_DOWNLOAD_URL;
+        if(mavenWrapperPropertyFile.exists()) {
+            FileInputStream mavenWrapperPropertyFileInputStream = null;
+            try {
+                mavenWrapperPropertyFileInputStream = new FileInputStream(mavenWrapperPropertyFile);
+                Properties mavenWrapperProperties = new Properties();
+                mavenWrapperProperties.load(mavenWrapperPropertyFileInputStream);
+                url = mavenWrapperProperties.getProperty(PROPERTY_NAME_WRAPPER_URL, url);
+            } catch (IOException e) {
+                System.out.println("- ERROR loading '" + MAVEN_WRAPPER_PROPERTIES_PATH + "'");
+            } finally {
+                try {
+                    if(mavenWrapperPropertyFileInputStream != null) {
+                        mavenWrapperPropertyFileInputStream.close();
+                    }
+                } catch (IOException e) {
+                    // Ignore ...
+                }
+            }
+        }
+        System.out.println("- Downloading from: " + url);
+
+        File outputFile = new File(baseDirectory.getAbsolutePath(), MAVEN_WRAPPER_JAR_PATH);
+        if(!outputFile.getParentFile().exists()) {
+            if(!outputFile.getParentFile().mkdirs()) {
+                System.out.println(
+                        "- ERROR creating output directory '" + outputFile.getParentFile().getAbsolutePath() + "'");
+            }
+        }
+        System.out.println("- Downloading to: " + outputFile.getAbsolutePath());
+        try {
+            downloadFileFromURL(url, outputFile);
+            System.out.println("Done");
+            System.exit(0);
+        } catch (Throwable e) {
+            System.out.println("- Error downloading");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private static void downloadFileFromURL(String urlString, File destination) throws Exception {
+        if (System.getenv("MVNW_USERNAME") != null && System.getenv("MVNW_PASSWORD") != null) {
+            String username = System.getenv("MVNW_USERNAME");
+            char[] password = System.getenv("MVNW_PASSWORD").toCharArray();
+            Authenticator.setDefault(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+        }
+        URL website = new URL(urlString);
+        ReadableByteChannel rbc;
+        rbc = Channels.newChannel(website.openStream());
+        FileOutputStream fos = new FileOutputStream(destination);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        fos.close();
+        rbc.close();
+    }
+
+}
+
+
+
+================================================
+FILE: .nixpacks/nixpacks.toml
+================================================
+# Força o Nixpacks a usar o Maven e a ignorar outros detectores !!!
+[phases]
+build = "mvn clean install -DskipTests"
+start = "java -jar target/*.jar"
+
+[detectors]
+order = ["maven", "gradle"] # Coloca Maven e Gradle antes de Dart
+
